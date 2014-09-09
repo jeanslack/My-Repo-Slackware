@@ -1,0 +1,151 @@
+#!/bin/sh
+
+# Slackware build script for videomass
+
+# Written by Gianluca Pernigotto <jeanlucperni[at]gmail[dot]com>
+
+PKGNAME=videomass
+VERSION=${VERSION:-0.10}
+BUILD=${BUILD:-1}
+TAG=${TAG:-GiPe}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/GiPe}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-/tmp}
+
+# which python version ?
+echo -e "
+For now, this program is not compatible whith python version 3.0 or > .\n\
+If you want use this program, please install/use python version 2.6 or\n\
+2.7, then specify here the python version that you use (ex: 2.6 or 2.7).
+Otherwise type Ctrl+c for stop."
+read pythonversion
+
+if [ "${pythonversion}" = "2.6" ]; then
+	PYVERSION="2.6"
+elif [ "${pythonversion}" = "2.7" ]; then
+	PYVERSION="2.7"
+else
+	echo "--------------------------------------------------------"
+	echo -e "\E[1;31mERROR:\E[0m omitted or incorrect ?"
+	echo "Check below compatible versions with the program:"
+	echo "python version 2.6.? to write:  2.6"
+	echo "python version 2.7.? to write:  2.7"
+	echo "--------------------------------------------------------"
+	exit 1
+fi
+
+# Set dir /usr/lib or /usr/lib64 (for python modules directory)
+LIB=`uname -m`
+
+if [ "$LIB" = "x86_64" ]; then
+	LIBDIRSUFFIX="64"
+	ARCH=${ARCH:-x86_64}
+else
+	LIBDIRSUFFIX=""
+	ARCH=${ARCH:-i486}
+fi
+#########################################
+set -e
+
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PKGNAME-$VERSION
+tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
+cd $PKGNAME-$VERSION
+chown -R root:root .
+find . \
+ \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
+ -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
+ -exec chmod 644 {} \;
+
+# Cleanup the desktop menu item.
+sed -i -e "/^Icon/s|=.*|=$PKGNAME|" videomass.desktop
+
+# Installing videomass-package
+install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/Videomass.py $PKG/usr/bin/videomass
+
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/__init__.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/__init__.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/arraymass.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/arraymass.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audioadd.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audioadd.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audiograbber.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audiograbber.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audiograbseq.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audiograbseq.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audiodialogs.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audiodialogs.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/os_processing.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/os_processing.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/settings.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/settings.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/mediainfo.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/mediainfo.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videocut.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videocut.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videograbframe.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videograbframe.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videorotate.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videorotate.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videosilent.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videosilent.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/ffprobe.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/ffprobe.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/infoprg.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/infoprg.py
+
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/normalize.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/normalize.py
+
+# make dir for files config and icons
+mkdir -p $PKG/usr/share/$PKGNAME/config $PKG/usr/share/$PKGNAME/icons
+# copy config. file
+cp -a  $TMP/$PKGNAME-$VERSION/share/videomass.conf $PKG/usr/share/$PKGNAME/config
+# copy file xml presets
+cp -a  $TMP/$PKGNAME-$VERSION/share/*.vdms $PKG/usr/share/$PKGNAME/config
+# copy icons
+cp -a  $TMP/$PKGNAME-$VERSION/art/*.png $PKG/usr/share/$PKGNAME/icons
+
+chmod 644 $PKG/usr/share/$PKGNAME/config/*
+
+mkdir -p $PKG/usr/share/{applications,pixmaps}
+install -m 0644 videomass.desktop $PKG/usr/share/applications/videomass.desktop
+
+
+install -m 0644 art/videomass.png $PKG/usr/share/pixmaps/videomass.png 
+
+
+mkdir -p $PKG/usr/doc/$PKGNAME $PKG/usr/doc/$PKGNAME/HTML
+
+cp -a $TMP/$PKGNAME-$VERSION/doc/*.txt $PKG/usr/doc/$PKGNAME
+cp -a $TMP/$PKGNAME-$VERSION/HTML/*.html $PKG/usr/doc/$PKGNAME/HTML
+
+
+rm -f $PKG/usr/share/$PKGNAME/{COPYING,README}
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME/$PKGNAME.SlackBuild
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
