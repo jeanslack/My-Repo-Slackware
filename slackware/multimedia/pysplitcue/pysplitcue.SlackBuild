@@ -1,0 +1,108 @@
+#!/bin/sh
+# Heavily based on the Slackware 13.37 SlackBuild
+# Author and Packager: Gianluca Pernigotto(jeanlucperni@gmail.com)
+# http://itamburiditux.blogspot.it
+#
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+#
+# Exit on most errors
+set -e 
+
+# Set variables:
+PKGNAME=pysplitcue
+VERSION=${VERSION:-0.6}
+ARCH=${ARCH:-noarch}
+BUILD=${BUILD:-1}
+TAG=${TAG:-GiPe}
+SOURCE="http://dl.dropbox.com/u/85679212/My_Applications/My_Projects/Slackware_13.37/Packages/pysplitcue/src/$PKGNAME-$VERSION.tar.gz"
+CWD=`pwd`
+OUTPUT=${OUTPUT:-$CWD}
+TMP=${TMP:-/tmp/txz/$PKGNAME}
+PKG=$TMP/package
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
+
+# Download sorce tarball if still not present
+if [ ! -e $CWD/$TAR ];then
+  wget $SOURCE
+fi
+
+# Create building directory
+rm -rf $PKG
+mkdir -p $TMP $PKG $OUTPUT
+
+# Decompress the source tarball
+cd $TMP
+tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
+
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+echo -e "\E[0;32m| Start SlackBuild pysplitcue |\E[0;0m"
+echo -e "\E[0;32m+-----------------------------+\E[0;0m"
+
+# Adjust permissions and ownerships
+cd $PKGNAME-$VERSION
+chown -R root:root .
+chmod -R u+w,go+r-w,a-s .
+
+# Building  pysplitcuepackage
+install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/bin/pysplitcue $PKG/usr/bin/pysplitcue
+
+
+# Installing manpage
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pysplitcue.1 $PKG/usr/man/man1/pysplitcue.1
+
+
+# Add documentation files: readme, changelog and so on
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cd $TMP/$PKGNAME-$VERSION
+cp -a AUTHORS BUGS COPYING README CHANGELOG $PKG/usr/doc/$PKGNAME-$VERSION
+# copy files for help
+cat $TMP/$PKGNAME-$VERSION/help/long-help.txt > $PKG/usr/doc/$PKGNAME-$VERSION/long-help.txt
+cat $TMP/$PKGNAME-$VERSION/help/short-help.txt > $PKG/usr/doc/$PKGNAME-$VERSION/short-help.txt
+chmod 644 $PKG/usr/doc/$PKGNAME-$VERSION/* 
+
+# Also add the slack-desk file and this slackbuild to the package
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/slack-desc
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/$PKGNAME.SlackBuild
+
+
+# Compress the man pages if present
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+
+# Find and print dependencies into slack-required file
+cd $PKG
+chown -R root:root $PKG
+
+# Create txz package
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+
+# Cleanup if enabled
+if [ "$1" = "--cleanup" ]; then
+ rm -rf $TMP
+fi
