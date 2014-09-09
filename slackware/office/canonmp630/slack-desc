@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The 'handy ruler' below makes it easier to edit a package description. Line
+# up the first '|' above the ':' following the base package name, and the '|'
+# on the right side marks the last column you can put a character in. You must
+# make exactly 11 lines for the formatting to be correct. It's also
+# customary to leave one space after the ':'.
+
+          |-----handy-ruler---------------------------------------------------|
+cnijfilter: cnijfilter (IJ Printer Driver for Linux)
+cnijfilter:
+cnijfilter: This IJ Printer Driver provides printing functions for Canon Inkjet
+cnijfilter: printers operating under the CUPS (Common UNIX Printing System)
+cnijfilter: environment.
+cnijfilter: Driver for Canon ip3600, ip4600, mp630, mp540, mp240, mp190,
+cnijfilter: ip1900 Models
+cnijfilter: 
+cnijfilter: Source:
+cnijfilter: http://support-my.canon-asia.com/contents/MY/EN/0100160603.html
+cnijfilter:

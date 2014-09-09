@@ -1,0 +1,292 @@
+#!/bin/sh
+ 
+# Heavily based on the Slackware 14.0 SlackBuild
+
+# Written by Matteo Rossini ( zerouno at slacky it )
+# Last build from Matteo Rossini ( zerouno at slacky it )
+# Modified and adapted by Gianluca Pernigotto
+ 
+# Slackware build script for Canon ip3600, ip4600, mp630, mp540, mp240, mp190, ip1900"
+# Official Site: 
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+#[Printer Model Name]        [Printer Model ID]
+#------------------------------------------------------------------
+# ip3600                      333
+# ip4600                      334
+# mp630                       336
+# mp540                       338
+# mp240                       341
+# mp190                       342
+# ip1900                      346
+
+# Note: only package 3.00-1 support these models
+
+
+set -e
+
+PKGNAME=cnijfilter-common
+VERSION=${VERSION:-3.00}
+RELEASE=${RELEASE:-1}
+SOURCE="http://dl.dropbox.com/u/85679212/My_Applications/My_Projects/Slackware_13.37/Packages/cnijfilter_x86/SlackBuild/$PKGNAME-$VERSION-$RELEASE.tar.gz"
+VERSION=${VERSION}_$RELEASE
+FOLDERTMP=cnijfilter-common-3.00
+BUILD=${BUILD:-1}
+TAG=${TAG:-sl}
+ARCH=${ARCH:-i686}
+TAR=
+DIR=
+DOCS="LICENSE*"
+SLKFILES="ppd.diff"
+
+# Set PRINTER_ID based on the MODEL variable
+if [ "${MODEL}" = "ip3600" ]; then
+  PRINTER_ID="333"
+elif [ "${MODEL}" = "ip4600" ]; then
+  PRINTER_ID="334"
+elif [ "${MODEL}" = "mp630" ]; then
+  PRINTER_ID="336"
+elif [ "${MODEL}" = "mp540" ]; then
+  PRINTER_ID="338"
+elif [ "${MODEL}" = "mp240" ]; then
+  PRINTER_ID="341"
+elif [ "${MODEL}" = "mp190" ]; then
+  PRINTER_ID="342"
+elif [ "${MODEL}" = "ip1900" ]; then
+  PRINTER_ID="346"
+fi
+
+if [ -z "$PRINTER_ID" ]; then
+  echo "--------------------------------------------------------"
+  echo "You have to set MODEL variable to one of these options :"
+  echo "- ip3600"
+  echo "- ip4600"
+  echo "- mp630"
+  echo "- mp540"
+  echo "- mp240"
+  echo "- mp190"
+  echo "- ip1900"
+  echo "example : MODEL=ip3600 ./cnijfilter-common.SlackBuild"
+  echo "--------------------------------------------------------"
+  exit 1
+fi
+
+MODEL=${MODEL}
+
+if [ -e EULA.TXT ];then
+  more EULA.TXT
+  echo "Do you accept terms? (yes/[no])":
+  read ACCEPT
+  if [ "$ACCEPT" != "yes" ];then
+    echo; echo "SlackBuild Aborted!!"
+    exit 1
+  fi
+fi
+
+JOBS=${JOBS:--j4}
+CWD=$(pwd)
+TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-$CWD}
+TAR=${TAR:-$(basename $SOURCE)}
+DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|.xz|)$//')}
+ 
+if [ ! -e "$CWD/$TAR" ];then
+  wget "$SOURCE" -O "$CWD/$TAR"
+fi
+ 
+CHOST="i486"
+_arc=32
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=native -mtune=native"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
+  CHOST="x86_64"
+  _arc=64
+fi
+
+rm -rf $TMP
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+tar xvf $CWD/$TAR
+#cd $DIR
+cd $FOLDERTMP
+# from a ".spec" file
+
+_prefix=/usr
+_bindir=${_prefix}/bin
+_libdir=/usr/lib${LIBDIRSUFFIX}
+_ppddir=/usr
+_cupsbindir=${_libdir}/cups
+
+CNBP_LIBS="libcnbpcmcm libcnbpcnclapi libcnbpcnclbjcmd libcnbpcnclui libcnbpess libcnbpo"
+#COM_LIBS="libcnnet"
+#PRINT_PKG_PROGRAM="ppd cnijfilter printui lgmon cngpijmon"
+
+PKGSERIES=${MODEL}series
+PKGNAME=cnijfilter-$PKGSERIES
+
+cd $TMP
+tar xvf $CWD/$TAR
+cd $FOLDERTMP
+sed -i "s,/usr/lib/cups,${_libdir}/cups," backend/src/Makefile.am
+patch -p1 < $CWD/ppd.diff
+
+# CONFIGURE
+echo "==== lgmon ==="
+  cd $TMP/$FOLDERTMP/lgmon
+  ./autogen.sh \
+    --prefix=${_prefix} \
+    --libdir=${_libdir} \
+    --program-suffix=${MODEL} \
+    --enable-progpath=${_bindir} 
+
+echo "==== libs ==="
+  cd $TMP/$FOLDERTMP/libs
+  ./autogen.sh \
+    --libdir=${_libdir} \
+    --prefix=${_prefix}
+
+echo "==== cngpij ==="
+  cd $TMP/$FOLDERTMP/cngpij
+  ./autogen.sh \
+    --libdir=${_libdir} \
+    --prefix=${_prefix} \
+    --enable-progpath=${_bindir}
+
+echo "==== pstocanonij ==="
+  cd $TMP/$FOLDERTMP/pstocanonij
+  ./autogen.sh \
+    --prefix=${_prefix} \
+    --libdir=${_libdir} \
+    --enable-progpath=${_bindir}
+
+echo "==== backend ==="
+  cd $TMP/$FOLDERTMP/backend
+  ./autogen.sh \
+    --libdir=${_libdir} \
+    --prefix=${_prefix}
+
+
+echo "==== ppd ==="
+  cd $TMP/$FOLDERTMP/ppd
+  ./autogen.sh \
+    --prefix=${_prefix} \
+    --libdir=${_libdir} \
+    --program-suffix=${MODEL}
+
+echo "==== cnijfilter ==="
+  cd $TMP/$FOLDERTMP/cnijfilter
+  ./autogen.sh \
+    --prefix=${_prefix} \
+    --program-suffix=${MODEL} \
+    --libdir=${_libdir} \
+    --enable-libpath=${_libdir}/bjlib \
+    --enable-binpath=${_bindir} 
+
+echo "==== printui ==="
+  cd $TMP/$FOLDERTMP/printui
+  ./autogen.sh \
+    --libdir=${_libdir} \
+    --prefix=${_prefix} \
+    --program-suffix=${MODEL} \
+    --datadir=${_prefix}/share \
+    --enable-libpath=${_libdir}/bjlib 
+
+echo "==== cngpijmon ==="
+  cd $TMP/$FOLDERTMP/cngpijmon
+  ./autogen.sh \
+    --libdir=${_libdir} \
+    --prefix=${_prefix} \
+    --program-suffix=${MODEL} \
+    --enable-progpath=${_bindir} \
+    --datadir=${_prefix}/share
+
+
+echo "==== MAKE ==="
+cd $TMP/$FOLDERTMP
+make $JOBS dirs="printui" || # first time printui fails
+make $JOBS dirs="lgmon ppd cnijfilter printui cngpijmon libs cngpij pstocanonij backend cngpijmon"
+
+echo "==== INSTALL ==="
+cd $TMP/$FOLDERTMP
+make dirs="lgmon ppd cnijfilter printui cngpijmon libs cngpij pstocanonij backend cngpijmon" install DESTDIR=${PKG}
+
+mkdir -p ${PKG}${_libdir}/bjlib
+install -c -m 644 ${PRINTER_ID}/database/*               ${PKG}${_libdir}/bjlib
+install -c -s -m 755 ${PRINTER_ID}/libs_bin/*.so.*        ${PKG}${_libdir}
+
+mkdir -p ${PKG}${_bindir}
+mkdir -p ${PKG}${_cupsbindir}/filter
+mkdir -p ${PKG}${_cupsbindir}/backend
+mkdir -p ${PKG}${_prefix}/share/cups/model
+
+
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION
+cp -r $DOCS $PKG/usr/doc/$PKGNAME-$VERSION
+ 
+mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
+cd $CWD
+for SB in $PKGNAME.SlackBuild slack-desc doinst.sh doinst.sh.gz EULA.TXT $SLKFILES;do
+  [ -e $SB ]&&cp -r $SB $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$SB
+done
+
+if [ -d $PKG/usr/man ]; then
+    ( cd $PKG/usr/man
+      find . -type f -exec gzip -9 {} \;
+      for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
+    )
+fi
+
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+  find . | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+)
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
+[ -e $CWD/doinst.sh.gz ] && zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
+
+
+cd $PKG
+chown -R root:root $PKG
+
+if [ -x "$(which requiredbuilder 2>/dev/null)" ];then
+  requiredbuilder -y -c -b -v -s $CWD $PKG   # add "-c -b" if you have binary files in /usr/share 
+  [ -e install/slack-required ]&&cat install/slack-required > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-required
+fi
+
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
+ 
+if [ "$2" = "--cleanup" ]; then
+  rm -rf $TMP
+fi
+ 
