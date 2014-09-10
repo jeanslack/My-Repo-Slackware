@@ -1,8 +1,7 @@
 #!/bin/sh
 
-# Slackware build script for videomass
-
-# Written by Gianluca Pernigotto <jeanlucperni[at]gmail[dot]com>
+#Slackware build script for videomass
+#Written by Gianluca Pernigotto <jeanlucperni[at]gmail[dot]com>
 
 PKGNAME=Videomass
 PRGNAME=videomass
@@ -68,54 +67,11 @@ sed -i -e "/^Icon/s|=.*|=$PKGNAME|" videomass.desktop
 # Installing videomass-package
 install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/Videomass.py $PKG/usr/bin/videomass
 
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/__init__.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/__init__.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/video_edit.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/video_edit.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audioadd.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audioadd.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audiograbber.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audiograbber.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audiograbseq.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audiograbseq.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audiodialogs.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audiodialogs.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/os_processing.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/os_processing.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/settings.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/settings.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/mediainfo.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/mediainfo.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videocut.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videocut.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videograbframe.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videograbframe.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videorotate.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videorotate.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/videosilent.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/videosilent.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/ffprobe.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/ffprobe.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/infoprg.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/infoprg.py
-
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/normalize.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/normalize.py
+# install all program modules python package
+for i in vdmspack/*.py; do
+	install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/$i \
+	$PKG/usr/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/$i
+done
 
 # make dir for files config and icons
 mkdir -p $PKG/usr/share/$PRGNAME/config $PKG/usr/share/$PRGNAME/icons
@@ -140,12 +96,11 @@ mkdir -p $PKG/usr/doc/$PRGNAME $PKG/usr/doc/$PRGNAME/HTML
 cp -a AUTHORS BUGS CHANGELOG INSTALL LICENSE README TODO docs/* \
     $PKG/usr/doc/$PRGNAME
 
-#cp -a $TMP/$PKGNAME-$VERSION/doc/*.txt $PKG/usr/doc/$PKGNAME
 cp -a $TMP/$PKGNAME-$VERSION/HTML/*.html $PKG/usr/doc/$PRGNAME/HTML
 
 
 rm -f $PKG/usr/share/$PRGNAME/{COPYING,README}
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
+cat $CWD/$PRGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
