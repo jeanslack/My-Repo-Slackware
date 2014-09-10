@@ -4,9 +4,10 @@
 
 # Written by Gianluca Pernigotto <jeanlucperni[at]gmail[dot]com>
 
-PKGNAME=videomass
-VERSION=${VERSION:-0.10}
-BUILD=${BUILD:-1}
+PKGNAME=Videomass
+PRGNAME=videomass
+VERSION=${VERSION:-0.11.2}
+BUILD=${BUILD:-2}
 TAG=${TAG:-GiPe}
 CWD=$(pwd)
 TMP=${TMP:-/tmp/GiPe}
@@ -71,8 +72,8 @@ install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/Videomass.py $PKG/usr/bin/videomass
 install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/__init__.py $PKG/usr\
 /lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/__init__.py
 
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/arraymass.py $PKG/usr\
-/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/arraymass.py
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/video_edit.py $PKG/usr\
+/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/video_edit.py
 
 install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/audioadd.py $PKG/usr\
 /lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/audioadd.py
@@ -117,15 +118,15 @@ install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/vdmspack/normalize.py $PKG/usr\
 /lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/vdmspack/normalize.py
 
 # make dir for files config and icons
-mkdir -p $PKG/usr/share/$PKGNAME/config $PKG/usr/share/$PKGNAME/icons
+mkdir -p $PKG/usr/share/$PRGNAME/config $PKG/usr/share/$PRGNAME/icons
 # copy config. file
-cp -a  $TMP/$PKGNAME-$VERSION/share/videomass.conf $PKG/usr/share/$PKGNAME/config
+cp -a  $TMP/$PKGNAME-$VERSION/share/videomass.conf $PKG/usr/share/$PRGNAME/config
 # copy file xml presets
-cp -a  $TMP/$PKGNAME-$VERSION/share/*.vdms $PKG/usr/share/$PKGNAME/config
+cp -a  $TMP/$PKGNAME-$VERSION/share/*.vdms $PKG/usr/share/$PRGNAME/config
 # copy icons
-cp -a  $TMP/$PKGNAME-$VERSION/art/*.png $PKG/usr/share/$PKGNAME/icons
+cp -a  $TMP/$PKGNAME-$VERSION/art/*.png $PKG/usr/share/$PRGNAME/icons
 
-chmod 644 $PKG/usr/share/$PKGNAME/config/*
+chmod 644 $PKG/usr/share/$PRGNAME/config/*
 
 mkdir -p $PKG/usr/share/{applications,pixmaps}
 install -m 0644 videomass.desktop $PKG/usr/share/applications/videomass.desktop
@@ -134,18 +135,21 @@ install -m 0644 videomass.desktop $PKG/usr/share/applications/videomass.desktop
 install -m 0644 art/videomass.png $PKG/usr/share/pixmaps/videomass.png 
 
 
-mkdir -p $PKG/usr/doc/$PKGNAME $PKG/usr/doc/$PKGNAME/HTML
+mkdir -p $PKG/usr/doc/$PRGNAME $PKG/usr/doc/$PRGNAME/HTML
 
-cp -a $TMP/$PKGNAME-$VERSION/doc/*.txt $PKG/usr/doc/$PKGNAME
-cp -a $TMP/$PKGNAME-$VERSION/HTML/*.html $PKG/usr/doc/$PKGNAME/HTML
+cp -a AUTHORS BUGS CHANGELOG INSTALL LICENSE README TODO docs/* \
+    $PKG/usr/doc/$PRGNAME
+
+#cp -a $TMP/$PKGNAME-$VERSION/doc/*.txt $PKG/usr/doc/$PKGNAME
+cp -a $TMP/$PKGNAME-$VERSION/HTML/*.html $PKG/usr/doc/$PRGNAME/HTML
 
 
-rm -f $PKG/usr/share/$PKGNAME/{COPYING,README}
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME/$PKGNAME.SlackBuild
+rm -f $PKG/usr/share/$PRGNAME/{COPYING,README}
+cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
