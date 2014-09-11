@@ -1,51 +1,75 @@
 #!/bin/sh
 
-#Slackware build script for videomass
-#Written by Gianluca Pernigotto <jeanlucperni[at]gmail[dot]com>
+# Slackware build script for videomass
+
+# Copyright 2014 Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# All rights reserved.
+
+# Written by Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# Last build from Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+
+# Official Site: https://github.com/jeanslack/Videomass
+# Patches from ...
+
+# Redistribution and use of this script, with or without modification, is
+# permitted provided that the following conditions are met:
+#
+# 1. Redistributions of this script must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ''AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PKGNAME=Videomass
 PRGNAME=videomass
 VERSION=${VERSION:-0.11.2}
 BUILD=${BUILD:-2}
 TAG=${TAG:-GiPe}
+
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
 CWD=$(pwd)
 TMP=${TMP:-/tmp/GiPe}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-/tmp}
+PYBIN=$(which python)
+PYPATH=$(dirname $PYBIN)
+
+# Set dir /usr/lib or /usr/lib64 (for python modules directory)
+if [ "$ARCH" = "i486" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  LIBDIRSUFFIX="64"
+else
+  LIBDIRSUFFIX=""
+fi
 
 # which python version ?
-echo -e "
-For now, this program is not compatible whith python version 3.0 or > .\n\
-If you want use this program, please install/use python version 2.6 or\n\
-2.7, then specify here the python version that you use (ex: 2.6 or 2.7).
-Otherwise type Ctrl+c for stop."
-read pythonversion
-
-if [ "${pythonversion}" = "2.6" ]; then
-	PYVERSION="2.6"
-elif [ "${pythonversion}" = "2.7" ]; then
+if [ -e $PYPATH/python2.7 ];then
 	PYVERSION="2.7"
-else
-	echo "--------------------------------------------------------"
-	echo -e "\E[1;31mERROR:\E[0m omitted or incorrect ?"
-	echo "Check below compatible versions with the program:"
-	echo "python version 2.6.? to write:  2.6"
-	echo "python version 2.7.? to write:  2.7"
-	echo "--------------------------------------------------------"
+elif [ -e $PYPATH/python2.6 ];then
+	PYVERSION="2.6"
+else 
+	echo "\E[1;31mERROR:\E[0m Not found compatible python version"
 	exit 1
 fi
 
-# Set dir /usr/lib or /usr/lib64 (for python modules directory)
-LIB=`uname -m`
-
-if [ "$LIB" = "x86_64" ]; then
-	LIBDIRSUFFIX="64"
-	ARCH=${ARCH:-x86_64}
-else
-	LIBDIRSUFFIX=""
-	ARCH=${ARCH:-i486}
-fi
-#########################################
 set -e
 
 rm -rf $PKG
@@ -62,7 +86,7 @@ find . \
  -exec chmod 644 {} \;
 
 # Cleanup the desktop menu item.
-sed -i -e "/^Icon/s|=.*|=$PKGNAME|" videomass.desktop
+sed -i -e "/^Icon/s|=.*|=$PRGNAME|" videomass.desktop
 
 # Installing videomass-package
 install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/Videomass.py $PKG/usr/bin/videomass
@@ -73,13 +97,13 @@ for i in vdmspack/*.py; do
 	$PKG/usr/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/$i
 done
 
-# make dir for files config and icons
-mkdir -p $PKG/usr/share/$PRGNAME/config $PKG/usr/share/$PRGNAME/icons
-# copy config. file
+# make dir for copy config file and copy file xml presets
+mkdir -p $PKG/usr/share/$PRGNAME/config
 cp -a  $TMP/$PKGNAME-$VERSION/share/videomass.conf $PKG/usr/share/$PRGNAME/config
-# copy file xml presets
 cp -a  $TMP/$PKGNAME-$VERSION/share/*.vdms $PKG/usr/share/$PRGNAME/config
-# copy icons
+
+# make dir for copy icons
+mkdir -p $PKG/usr/share/$PRGNAME/icons
 cp -a  $TMP/$PKGNAME-$VERSION/art/*.png $PKG/usr/share/$PRGNAME/icons
 
 chmod 644 $PKG/usr/share/$PRGNAME/config/*
@@ -91,13 +115,12 @@ install -m 0644 videomass.desktop $PKG/usr/share/applications/videomass.desktop
 install -m 0644 art/videomass.png $PKG/usr/share/pixmaps/videomass.png 
 
 
-mkdir -p $PKG/usr/doc/$PRGNAME $PKG/usr/doc/$PRGNAME/HTML
-
+mkdir -p $PKG/usr/doc/$PRGNAME
 cp -a AUTHORS BUGS CHANGELOG INSTALL LICENSE README TODO docs/* \
     $PKG/usr/doc/$PRGNAME
 
+mkdir -p $PKG/usr/doc/$PRGNAME/HTML
 cp -a $TMP/$PKGNAME-$VERSION/HTML/*.html $PKG/usr/doc/$PRGNAME/HTML
-
 
 rm -f $PKG/usr/share/$PRGNAME/{COPYING,README}
 cat $CWD/$PRGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
@@ -108,3 +131,4 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
+
