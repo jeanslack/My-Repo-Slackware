@@ -116,7 +116,7 @@ install -m 0644 art/videomass.png $PKG/usr/share/pixmaps/videomass.png
 
 
 mkdir -p $PKG/usr/doc/$PRGNAME
-cp -a AUTHORS BUGS CHANGELOG INSTALL LICENSE README TODO docs/* \
+cp -a AUTHORS BUGS CHANGELOG INSTALL LICENSE README.md TODO docs/* \
     $PKG/usr/doc/$PRGNAME
 
 mkdir -p $PKG/usr/doc/$PRGNAME/HTML
