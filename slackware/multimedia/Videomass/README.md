@@ -1,7 +1,8 @@
+---------------------------------------------------------
 This is SlackBuild scipt for build Videomass packages.
+---------------------------------------------------------
 
-Videomass is a cross-platform user graphic interface for ffmpeg, developed 
-in python completely with wxPython toolkit. 
+Videomass is a cross-platform graphic user interface for ffmpeg 
 
 You must download this folder completely (if compressed archive, unpack it)
 and then download Videomass sources. The Videomass source directory be renamed 
