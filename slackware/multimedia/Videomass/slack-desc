@@ -6,14 +6,14 @@
 # leave one space after the ':'.
 
         |-----handy-ruler------------------------------------------------------|
-videomass: videomass (videomass suite)
+videomass: videomass (front-end ffmpeg gui)
 videomass:
-videomass: videomass is a cross platform suite programs of tools
-videomass: for the video's conversion, editings and batch-mode
-videomass: based on ffmpeg and write in python completely.
+videomass: Videomass is a cross-platform graphic user interface for ffmpeg 
+videomass: developed in python completely with wxPython toolkit.
+videomass: It born to need for give a some graphic feature at the too many
+videomass: ffmpeg potentialities.
 videomass:
-videomass: Homepage: http://itamburiditux.blogspot.com
-videomass:
+videomass: Homepage: http://jeanslack.github.io/Videomass/
 videomass:
 videomass:
 videomass:
