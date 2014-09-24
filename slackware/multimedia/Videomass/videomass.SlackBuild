@@ -7,9 +7,8 @@
 
 # Written by Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
 # Last build from Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
-
+#
 # Official Site: https://github.com/jeanslack/Videomass
-# Patches from ...
 
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -31,6 +30,7 @@
 PKGNAME=Videomass
 PRGNAME=videomass
 VERSION=${VERSION:-0.11.2}
+PRERELEASE=${PRERELEASE:-beta}
 BUILD=${BUILD:-2}
 TAG=${TAG:-GiPe}
 
@@ -46,28 +46,19 @@ CWD=$(pwd)
 TMP=${TMP:-/tmp/GiPe}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-/tmp}
-PYBIN=$(which python)
-PYPATH=$(dirname $PYBIN)
 
-# Set dir /usr/lib or /usr/lib64 (for python modules directory)
 if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
   LIBDIRSUFFIX="64"
 else
+  SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
-fi
-
-# which python version ?
-if [ -e $PYPATH/python2.7 ];then
-	PYVERSION="2.7"
-elif [ -e $PYPATH/python2.6 ];then
-	PYVERSION="2.6"
-else 
-	echo "\E[1;31mERROR:\E[0m Not found compatible python version"
-	exit 1
 fi
 
 set -e
@@ -75,36 +66,34 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PKGNAME-$VERSION
-tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
-cd $PKGNAME-$VERSION
-chown -R root:root .
-find . \
- \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
- -exec chmod 755 {} \; -o \
- \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
- -exec chmod 644 {} \;
+rm -rf $PKGNAME-$VERSION-$PRERELEASE
+tar xvf $CWD/$PKGNAME-$VERSION-$PRERELEASE.tar.gz
+cd $PKGNAME-$VERSION-$PRERELEASE
+
+chown -R root:root . 
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 # Cleanup the desktop menu item.
 sed -i -e "/^Icon/s|=.*|=$PRGNAME|" videomass.desktop
 
-# Installing videomass-package
-install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/Videomass.py $PKG/usr/bin/videomass
+python setup.py install --root=$PKG
 
-# install all program modules python package
-for i in vdmspack/*.py; do
-	install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/$i \
-	$PKG/usr/lib$LIBDIRSUFFIX/python$PYVERSION/site-packages/$i
-done
+# Strip binaries and libraries.
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 # make dir for copy config file and copy file xml presets
 mkdir -p $PKG/usr/share/$PRGNAME/config
-cp -a  $TMP/$PKGNAME-$VERSION/share/videomass.conf $PKG/usr/share/$PRGNAME/config
-cp -a  $TMP/$PKGNAME-$VERSION/share/*.vdms $PKG/usr/share/$PRGNAME/config
+cp -a  $TMP/$PKGNAME-$VERSION-$PRERELEASE/share/videomass.conf $PKG/usr/share/$PRGNAME/config
+cp -a  $TMP/$PKGNAME-$VERSION-$PRERELEASE/share/*.vdms $PKG/usr/share/$PRGNAME/config
 
 # make dir for copy icons
 mkdir -p $PKG/usr/share/$PRGNAME/icons
-cp -a  $TMP/$PKGNAME-$VERSION/art/*.png $PKG/usr/share/$PRGNAME/icons
+cp -a  $TMP/$PKGNAME-$VERSION-$PRERELEASE/art/*.png $PKG/usr/share/$PRGNAME/icons
 
 chmod 644 $PKG/usr/share/$PRGNAME/config/*
 
@@ -120,7 +109,7 @@ cp -a AUTHORS BUGS CHANGELOG INSTALL LICENSE README.md TODO docs/* \
     $PKG/usr/doc/$PRGNAME
 
 mkdir -p $PKG/usr/doc/$PRGNAME/HTML
-cp -a $TMP/$PKGNAME-$VERSION/HTML/*.html $PKG/usr/doc/$PRGNAME/HTML
+cp -a $TMP/$PKGNAME-$VERSION-$PRERELEASE/HTML/*.html $PKG/usr/doc/$PRGNAME/HTML
 
 rm -f $PKG/usr/share/$PRGNAME/{COPYING,README}
 cat $CWD/$PRGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
@@ -131,4 +120,3 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
-
