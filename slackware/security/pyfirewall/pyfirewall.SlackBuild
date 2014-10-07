@@ -1,10 +1,15 @@
 #!/bin/sh
-# Heavily based on the Slackware 13.37 SlackBuild
+
+# Slackware build script for pyfirewall
+
+# Copyright 2014 Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# All rights reserved.
+
+# Written by Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# Last build from Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
 #
-# Author and Packager: Gianluca Pernigotto(jeanlucperni@gmail.com)
-# http://itamburiditux.blogspot.it
-# Tuesday, 14 August 2012
-#
+# Official Site: https://github.com/jeanslack/pyfirewall
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -21,80 +26,67 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#
-#
-# Exit on most errors
-set -e 
 
-# Set variables:
 PKGNAME=pyfirewall
 VERSION=${VERSION:-0.12}
 BUILD=${BUILD:-2}
 TAG=${TAG:-GiPe}
-SOURCE="http://dl.dropbox.com/u/85679212/My_Applications/My_Projects/Slackware_13.37/Packages/pyfirewall/$VERSION/src/$PKGNAME-$VERSION.tar.gz"
 
-CWD=`pwd`
-OUTPUT=${OUTPUT:-$CWD}
-TMP=${TMP:-/tmp/txz/$PKGNAME}
-PKG=$TMP/package
-TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
-
-# Download sorce tarball if still not present
-if [ ! -e $CWD/$TAR ];then
-  wget $SOURCE
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
 fi
 
-# which python version ?
-echo -e "\n\E[1;32mFor now, this program supports python2.6 and python2.7\n\
-Please, specify the python version used in your system > \E[0m"
-read pythonversion
+CWD=$(pwd)
+TMP=${TMP:-/tmp/GiPe}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-/tmp}
 
-if [ "${pythonversion}" = "2.6" ]; then
-	PYVERSION="2.6"
-elif [ "${pythonversion}" = "2.7" ]; then
-	PYVERSION="2.7"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
 else
-	echo "--------------------------------------------------------"
-	echo -e "\E[1;31mERROR:\E[0m omitted or incorrect ?"
-	echo "Check below compatible versions with the program:"
-	echo "python version 2.6.? to write:  2.6"
-	echo "python version 2.7.? to write:  2.7"
-	echo "--------------------------------------------------------"
-	exit 1
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
 fi
 
-# Set dir /usr/lib or /usr/lib64 (for python modules)
-LIB=`uname -m`
-if [ "$LIB" = "x86_64" ]; then
-	LIBDIRSUFFIX="64"
-	ARCH=${ARCH:-x86_64}
-else
-	LIBDIRSUFFIX=""
-	ARCH=${ARCH:-i486}
-fi
+set -e
 
-# Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
-
-# Decompress the source tarball
 cd $TMP
-tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
-
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild pyfirewall |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-
-# Adjust permissions and ownerships
+rm -rf $PKGNAME-$VERSION
+tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
 cd $PKGNAME-$VERSION
-chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
 
-# install binary bash script and module for python 
-install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/bin/pyfirewall $PKG/usr/bin/pyfirewall
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/site-packages/MODULE_pyfirewall.py $PKG/usr/lib$LIBDIRSUFFIX/$PYVERSION/site-packages/MODULE_pyfirewall.py  
+chown -R root:root . 
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+python setup.py install --root=$PKG
+
+# Strip binaries and libraries.
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true  
+  
+# Installing manpage
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pyfirewall.8 $PKG/usr/man/it/man8/pyfirewall.8
+
+# Compress man pages
+find $PKG/usr/man -type f -exec gzip -9 {} \;
+for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 # Do special operations
 mkdir -p $PKG/etc/$PKGNAME/$VERSION/private # add need directory for database and configurations
@@ -107,9 +99,6 @@ cat $TMP/$PKGNAME-$VERSION/etc/pyfirewall/iface.conf > $PKG/etc/$PKGNAME/$VERSIO
 mkdir -p $PKG/etc/rc.d
 cat $TMP/$PKGNAME-$VERSION/rc.d/rc.firewall > $PKG/etc/rc.d/rc.firewall.new
 cat $TMP/$PKGNAME-$VERSION/etc/sysctl.conf > $PKG/etc/sysctl.conf.new
-
-# Installing manpage
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pyfirewall.8 $PKG/usr/man/it/man8/pyfirewall.8
 
 # Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
@@ -128,24 +117,7 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 [ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 
-# Compress the man pages if present
-if [ -d $PKG/usr/man ]; then
-	( cd $PKG/usr/man
-	find . -type f -exec gzip -9 {} \;
-	for i in $( find . -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
-	)
-fi
-
-
-# Find and print dependencies into slack-required file
+# Make the package; be sure to leave it in $OUTPUT
 cd $PKG
-chown -R root:root $PKG
-
 # Create txz package
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
-
-# Cleanup if enabled
-if [ "$1" = "--cleanup" ]; then
-	rm -rf $TMP
-fi
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
