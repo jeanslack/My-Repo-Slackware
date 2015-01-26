@@ -6,7 +6,7 @@
 # leave one space after the ':'.
 
           |-----handy-ruler---------------------------------------------------|
-pysplitcue: Pysplitcue (Audio-split-cue-file)
+pysplitcue: Pysplitcue (Audio-splitter-cue-file)
 pysplitcue:
 pysplitcue: Pysplitcue is a command-line program to split track audio from a  
 pysplitcue: cue-file and convert to a different audio formats 
