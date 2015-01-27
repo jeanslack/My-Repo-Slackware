@@ -83,7 +83,7 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 # Installing manpage
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pysplitcue.1 $PKG/usr/man/man1/pysplitcue.1
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pysplitcue.1.gz $PKG/usr/man/man1/pysplitcue.1.gz
 
 mkdir -p $PKG/usr/doc/$PRGNAME
 cp -a AUTHORS BUGS CHANGELOG LICENSE README.md $PKG/usr/doc/$PRGNAME
