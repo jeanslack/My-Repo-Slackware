@@ -1,8 +1,15 @@
 #!/bin/sh
-# Heavily based on the Slackware 13.37 SlackBuild
-# Author and Packager: Gianluca Pernigotto(jeanlucperni@gmail.com)
-# http://itamburiditux.blogspot.it
+
+# Slackware build script for pyrename
+
+# Copyright 2015 Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# All rights reserved.
+
+# Written by Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# Last build from Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
 #
+# Official Site: https://github.com/jeanslack/pyrename
+
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
 #
@@ -19,100 +26,73 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#
-#
-# Exit on most errors
-set -e 
 
-# Set variables:
 PKGNAME=pyrename
-VERSION=${VERSION:-0.8}
-BUILD=${BUILD:-2}
+PRGNAME=pyrename
+VERSION=${VERSION:-0.9}
+BUILD=${BUILD:-1}
 TAG=${TAG:-GiPe}
-SOURCE="http://dl.dropbox.com/u/85679212/My_Applications/My_Projects/Slackware_13.37/Packages/pyrename/$VERSION/src/$PKGNAME-$VERSION.tar.gz"
 
-CWD=`pwd`
-OUTPUT=${OUTPUT:-$CWD}
-TMP=${TMP:-/tmp/txz/$PKGNAME}
-PKG=$TMP/package
-TAR=${TAR:-$(basename $SOURCE)}
-DIR=${DIR:-$(echo "$TAR"|sed -r 's/(\.tar|)(.gz|.bz2|)$//')}
-
-# Download sorce tarball if still not present
-if [ ! -e $CWD/$TAR ];then
-  wget $SOURCE
+if [ -z "$ARCH" ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i486 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
 fi
 
-# which python version ?
-echo -e "\n\E[1;32mFor now, this program supports python2.6 and python2.7\n\
-Please, specify the python version used in your system > \E[0m"
-read pythonversion
+CWD=$(pwd)
+TMP=${TMP:-/tmp/GiPe}
+PKG=$TMP/package-$PKGNAME
+OUTPUT=${OUTPUT:-/tmp}
 
-if [ "${pythonversion}" = "2.6" ]; then
-	PYVERSION="2.6"
-elif [ "${pythonversion}" = "2.7" ]; then
-	PYVERSION="2.7"
+if [ "$ARCH" = "i486" ]; then
+  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "i686" ]; then
+  SLKCFLAGS="-O2 -march=i686 -mtune=i686"
+  LIBDIRSUFFIX=""
+elif [ "$ARCH" = "x86_64" ]; then
+  SLKCFLAGS="-O2 -fPIC"
+  LIBDIRSUFFIX="64"
 else
-	echo "--------------------------------------------------------"
-	echo -e "\E[1;31mERROR:\E[0m omitted or incorrect ?"
-	echo "Check below compatible versions with the program:"
-	echo "python version 2.6.? to write:  2.6"
-	echo "python version 2.7.? to write:  2.7"
-	echo "--------------------------------------------------------"
-	exit 1
+  SLKCFLAGS="-O2"
+  LIBDIRSUFFIX=""
 fi
 
-# Set dir /usr/lib or /usr/lib64 (for python modules)
-LIB=`uname -m`
-if [ "$LIB" = "x86_64" ]; then
-	LIBDIRSUFFIX="64"
-	ARCH=${ARCH:-x86_64}
-else
-	LIBDIRSUFFIX=""
-	ARCH=${ARCH:-i486}
-fi
+set -e
 
-# Create building directory
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
-
-# Decompress the source tarball
 cd $TMP
-tar xvzf $CWD/$PKGNAME-$VERSION.tar.gz
-
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-echo -e "\E[0;32m| Start SlackBuild pyrename |\E[0;0m"
-echo -e "\E[0;32m+-----------------------------+\E[0;0m"
-
-# Adjust permissions and ownerships
+rm -rf $PKGNAME-$VERSION
+tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
 cd $PKGNAME-$VERSION
-chown -R root:root .
-chmod -R u+w,go+r-w,a-s .
 
-# install binary bash script and modules for python 
-install -m 0755 -p -D $TMP/$PKGNAME-$VERSION/bin/pyrename $PKG/usr/bin/pyrename
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/site-packages/file_renamer.py $PKG/usr/lib$LIBDIRSUFFIX/$PYVERSION/site-packages/file_renamer.py
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/site-packages/dir_renamer.py $PKG/usr/lib$LIBDIRSUFFIX/$PYVERSION/site-packages/dir_renamer.py
+chown -R root:root . 
+find -L . \
+ \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
+  -o -perm 511 \) -exec chmod 755 {} \; -o \
+ \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+python setup.py install --root=$PKG
+
+# Strip binaries and libraries.
+find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
+  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 # Installing manpage
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pyrename.1 $PKG/usr/man/man1/pyrename.1
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pyrename.1.gz $PKG/usr/man/man1/pyrename.1.gz
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/it/pyrename.1.gz $PKG/usr/man/it/man1/pyrename.1.gz
 
+mkdir -p $PKG/usr/doc/$PRGNAME
+cp -a AUTHORS BUGS CHANGELOG COPYING README.md $PKG/usr/doc/$PRGNAME
 
-# Add documentation files: readme, changelog and so on
-mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
-cd $TMP/$PKGNAME-$VERSION
-cp -a AUTHORS BUGS COPYING README CHANGELOG $PKG/usr/doc/$PKGNAME-$VERSION
- 
+cat $CWD/$PRGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
 
-# Also add the slack-desk file and this slackbuild to the package
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
-cat $CWD/slack-desc > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/slack-desc
-[ -e $CWD/doinst.sh ] && cat $CWD/doinst.sh > $PKG/install/doinst.sh
-chmod 0644 $PKG/usr/doc/$PKGNAME-$VERSION/* 
-
 
 # Compress the man pages if present
 if [ -d $PKG/usr/man ]; then
@@ -122,16 +102,5 @@ if [ -d $PKG/usr/man ]; then
     )
 fi
 
-
-# Find and print dependencies into slack-required file
 cd $PKG
-chown -R root:root $PKG
-
-# Create txz package
-/sbin/makepkg -l y -c n $OUTPUT/$PKGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
-
-
-# Cleanup if enabled
-if [ "$1" = "--cleanup" ]; then
-	rm -rf $TMP
-fi
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAME-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
