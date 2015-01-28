@@ -87,7 +87,7 @@ install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pyrename.1.gz $PKG/usr/man/man1
 install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/it/pyrename.1.gz $PKG/usr/man/it/man1/pyrename.1.gz
 
 mkdir -p $PKG/usr/doc/$PRGNAME
-cp -a AUTHORS BUGS CHANGELOG COPYING README.md $PKG/usr/doc/$PRGNAME
+cp -a AUTHORS BUGS CHANGELOG COPYING README.md TODO $PKG/usr/doc/$PRGNAME
 
 cat $CWD/$PRGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
 
