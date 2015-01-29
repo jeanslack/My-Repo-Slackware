@@ -1,12 +1,41 @@
 ---------------------------------------------------------
-This is SlackBuild scipt for build Videomass packages.
+SlackBuild scipt for build Videomass packages.
 ---------------------------------------------------------
 
-Videomass is a cross-platform graphic user interface for ffmpeg 
+Description:
+----
 
-You must download this folder completely (if compressed archive, unpack it)
-and then download Videomass sources and put the archive of videomass into 
-the slackbuild folder and run './videomass.SlackBuild' sh script.
+This automates the package building for Slackware distibutions.
+
+
+Instructions
+---- 
+
+- Open a terminal window and download this SlackBuilds content directory :
+
+		svn checkout https://github.com/jeanslack/My-Repo-Slackware/trunk/slackware/multimedia/videomass
+
+
+- Login with root:
+
+		su -
+		
+- Enter in the path-name of a slackbuild folder:
+
+		cd /path/of_the slackbuild/
+
+- Then run the script:
+
+		./videomass.SlackBuild
 
 Make sure to run this script in a real root shell ("su -") and that you
 have either tetex or texlive installed.
+
+
+For instructions on how to use the SlackBuilds, see:
+
+[http://slackbuilds.org/howto/](http://slackbuilds.org/howto/)
+
+[http://www.slackwiki.com/SlackBuild_Scripts](http://www.slackwiki.com/SlackBuild_Scripts)
+
+[http://www.slacky.eu/slacky/Slackware_%26_SlackBuild](http://www.slacky.eu/slacky/Slackware_%26_SlackBuild)
