@@ -13,7 +13,7 @@ Instructions
 
 - Open a terminal window and download this SlackBuilds content directory :
 
-	svn checkout https://github.com/jeanslack/My-Repo-Slackware/trunk/slackware/utilities/pyrename
+		svn checkout https://github.com/jeanslack/My-Repo-Slackware/trunk/slackware/utilities/pyrename
 
 
 - Login with root:
