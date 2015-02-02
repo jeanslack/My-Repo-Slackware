@@ -82,7 +82,7 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true  
   
 # Installing manpage
-install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pyfirewall.8 $PKG/usr/man/it/man8/pyfirewall.8
+install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/pyfirewall.8.gz $PKG/usr/man/it/man8/pyfirewall.8.gz
 
 # Compress man pages
 find $PKG/usr/man -type f -exec gzip -9 {} \;
@@ -91,19 +91,23 @@ for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; r
 # Do special operations
 mkdir -p $PKG/etc/$PKGNAME/$VERSION/private # add need directory for database and configurations
 chmod 0700 $PKG/etc/$PKGNAME/$VERSION/private
-cat $TMP/$PKGNAME-$VERSION/etc/pyfirewall/parser_loader > $PKG/etc/$PKGNAME/$VERSION/parser_loader
+
+cat $TMP/$PKGNAME-$VERSION/config/rules/parser_loader > $PKG/etc/$PKGNAME/$VERSION/parser_loader
 chmod 0700 $PKG/etc/pyfirewall/$VERSION/parser_loader
-cat $TMP/$PKGNAME-$VERSION/etc/pyfirewall/rules_single_interface.conf > $PKG/etc/$PKGNAME/$VERSION/rules_single_interface.conf.new
-cat $TMP/$PKGNAME-$VERSION/etc/pyfirewall/rules_multi_interfaces.conf > $PKG/etc/$PKGNAME/$VERSION/rules_multi_interfaces.conf.new
-cat $TMP/$PKGNAME-$VERSION/etc/pyfirewall/iface.conf > $PKG/etc/$PKGNAME/$VERSION/iface.conf.new
+
+cat $TMP/$PKGNAME-$VERSION/config/rules/rules_single_interface.conf > $PKG/etc/$PKGNAME/$VERSION/rules_single_interface.conf.new
+cat $TMP/$PKGNAME-$VERSION/config/rules/rules_multi_interfaces.conf > $PKG/etc/$PKGNAME/$VERSION/rules_multi_interfaces.conf.new
+
+cat $TMP/$PKGNAME-$VERSION/config/rules/iface.conf > $PKG/etc/$PKGNAME/$VERSION/iface.conf.new
+
 mkdir -p $PKG/etc/rc.d
-cat $TMP/$PKGNAME-$VERSION/rc.d/rc.firewall > $PKG/etc/rc.d/rc.firewall.new
-cat $TMP/$PKGNAME-$VERSION/etc/sysctl.conf > $PKG/etc/sysctl.conf.new
+cat $TMP/$PKGNAME-$VERSION/config/demon/firewall > $PKG/etc/rc.d/rc.firewall.new
+cat $TMP/$PKGNAME-$VERSION/config/sysctl.conf > $PKG/etc/sysctl.conf.new
 
 # Add documentation files: readme, changelog and so on
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $TMP/$PKGNAME-$VERSION
-cp -a AUTHORS BUGS COPYING README CHANGELOG docs/* $PKG/usr/doc/$PKGNAME-$VERSION
+cp -a AUTHORS BUGS COPYING README.md CHANGELOG TODO docs/* $PKG/usr/doc/$PKGNAME-$VERSION
 
 
 cat $CWD/$PKGNAME.SlackBuild > $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild/$PKGNAME.SlackBuild
