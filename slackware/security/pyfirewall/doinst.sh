@@ -18,7 +18,9 @@ if [ -h etc/rc.d/rc.firewall ]; then
 	rm -rf etc/rc.d/rc.firewall
 fi
 
+version=0.13
 
+# configure rc.firewall
 if [ -e etc/rc.d/rc.firewall ]; then
 	cp -a etc/rc.d/rc.firewall etc/rc.d/rc.firewall.new.incoming
 	cat etc/rc.d/rc.firewall.new > etc/rc.d/rc.firewall.new.incoming
@@ -26,45 +28,48 @@ if [ -e etc/rc.d/rc.firewall ]; then
 fi
 config etc/rc.d/rc.firewall.new 
 
-
-if [ -e etc/pyfirewall/0.12/rules_single_interface.conf ]; then
-	echo -e "\nAttenzione, Esiste un'altra coppia di /etc/pyfirewall/0.12/rules_single_interface.conf"
-	echo -e "..Procedo al BackUp: sarà rinominato 'rules_single_interface.conf.orig'\n"
-	cp -a etc/pyfirewall/0.12/rules_single_interface.conf etc/pyfirewall/0.12/rules_single_interface.conf.new.incoming
-	cat etc/pyfirewall/0.12/rules_single_interface.conf.new > etc/pyfirewall/0.12/rules_single_interface.conf.new.incoming
-	mv etc/pyfirewall/0.12/rules_single_interface.conf.new.incoming etc/pyfirewall/0.12/rules_single_interface.conf.new
-	mv etc/pyfirewall/0.12/rules_single_interface.conf etc/pyfirewall/0.12/rules_single_interface.conf.orig # if exist, make back-up and rename in .orig
-	chmod 0644 etc/pyfirewall/0.12/rules_single_interface.conf.orig
+# configure rules_single_interface script
+if [ -e etc/pyfirewall/$version/Iptables_Rules ]; then
+	cp -a etc/pyfirewall/$version/Iptables_Rules \
+	etc/pyfirewall/$version/Iptables_Rules.new.incoming
+	cat etc/pyfirewall/$version/Iptables_Rules.new > \
+	etc/pyfirewall/$version/Iptables_Rules.new.incoming
+	mv etc/pyfirewall/$version/Iptables_Rules.new.incoming \
+	etc/pyfirewall/$version/Iptables_Rules.new
+	mv etc/pyfirewall/$version/Iptables_Rules \
+	etc/pyfirewall/$version/Iptables_Rules.orig # if exist, make back-up and rename in .orig
+	chmod 0644 etc/pyfirewall/$version/Iptables_Rules.orig
 fi
-config etc/pyfirewall/0.12/rules_single_interface.conf.new
-chmod 0700 etc/pyfirewall/0.12/rules_single_interface.conf
 
-if [ -e etc/pyfirewall/0.12/rules_multi_interfaces.conf ]; then
-	echo -e "\nAttenzione, Esiste un'altra coppia di /etc/pyfirewall/0.12/rules_multi_interfaces.conf"
-	echo -e "..Procedo al BackUp: sarà rinominato 'rules_multi_interfaces.conf.orig'\n"
-	cp -a etc/pyfirewall/0.12/rules_multi_interfaces.conf etc/pyfirewall/0.12/rules_multi_interfaces.conf.new.incoming
-	cat etc/pyfirewall/0.12/rules_multi_interfaces.conf.new > etc/pyfirewall/0.12/rules_multi_interfaces.conf.new.incoming
-	mv etc/pyfirewall/0.12/rules_multi_interfaces.conf.new.incoming etc/pyfirewall/0.12/rules_multi_interfaces.conf.new
-	mv etc/pyfirewall/0.12/rules_multi_interfaces.conf etc/pyfirewall/0.12/rules_multi_interfaces.conf.orig # if exist, make back-up and rename in .orig
-	chmod 0644 etc/pyfirewall/0.12/rules_multi_interfaces.conf.orig
+config etc/pyfirewall/$version/Iptables_Rules.new
+chmod 0700 etc/pyfirewall/$version/Iptables_Rules
+
+# configure rules_multi_interfaces script
+if [ -e etc/pyfirewall/$version/Iptables_Rules_MultiFaces ]; then
+	cp -a etc/pyfirewall/$version/Iptables_Rules_MultiFaces \
+	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new.incoming
+	cat etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new > \
+	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new.incoming
+	mv etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new.incoming \
+	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new
+	mv etc/pyfirewall/$version/Iptables_Rules_MultiFaces \
+	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.orig # if exist, make back-up and rename in .orig
+	chmod 0644 etc/pyfirewall/$version/Iptables_Rules_MultiFaces.orig
 fi
-config etc/pyfirewall/0.12/rules_multi_interfaces.conf.new
-chmod 0700 etc/pyfirewall/0.12/rules_multi_interfaces.conf
+config etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new
+chmod 0700 etc/pyfirewall/$version/Iptables_Rules_MultiFaces
 
-
-if [ -e etc/pyfirewall/0.12/iface.conf ]; then
-	echo -e "\nAttenzione, Esiste un'altra coppia di /etc/pyfirewall/0.12/iface.conf"
-	echo -e "..Procedo al BackUp: sarà rinominato 'iface.conf.conf.orig'\n" 
-	mv etc/pyfirewall/0.12/iface.conf etc/pyfirewall/0.12/iface.conf.orig # if exist, make back-up and rename in .orig
+# configure iface.conf 
+if [ -e etc/pyfirewall/$version/iface.conf ]; then
+	mv etc/pyfirewall/$version/iface.conf \
+	etc/pyfirewall/$version/iface.conf.orig # if exist, make back-up and rename in .orig
 fi
-config etc/pyfirewall/0.12/iface.conf.new
-chmod 0644 etc/pyfirewall/0.12/iface.conf
+config etc/pyfirewall/$version/iface.conf.new
+chmod 0644 etc/pyfirewall/$version/iface.conf
 
 
 # if exist sysctl.conf, make back-up and rename in .orig
 if [ -e etc/sysctl.conf ]; then
-        echo -e "\nAttenzione, Esiste un altro config chiamato 'sysctl.conf' in /etc"
-	echo -e "..Procedo alla copia di BackUp: il file sarà rinominato 'sysctl.conf.orig'\n"
 	mv etc/sysctl.conf etc/sysctl.conf.orig
 # 	a=1
 # 	for i in etc/*sysctl.conf.orig; 
@@ -73,9 +78,11 @@ if [ -e etc/sysctl.conf ]; then
 # 		let a=a+1 
 #  
 # 	done
+
 fi
 config etc/sysctl.conf.new
 
-echo -e "\n\E[1m Now, you can execution in terminal window '/sbin/sysctl -p'\n for enable network security kernel parameters, then run\n pyfirewall whit 'pyfirewall start'. Read the every best man\n page with 'man pyfirewall' for more info.\E[0m\n"
-
-
+echo -e "\n\E[1m Now, you can execute '/sbin/sysctl -p' in the terminal \
+window for\n enable network security kernel parameters, then run \
+pyfirewall\n with 'pyfirewall start' command.\n Read the every best man \
+page with 'man pyfirewall' for more info.\E[0m\n"
