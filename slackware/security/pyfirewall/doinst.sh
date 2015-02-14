@@ -18,7 +18,6 @@ if [ -h etc/rc.d/rc.firewall ]; then
 	rm -rf etc/rc.d/rc.firewall
 fi
 
-version=0.13
 
 # configure rc.firewall
 if [ -e etc/rc.d/rc.firewall ]; then
@@ -29,43 +28,43 @@ fi
 config etc/rc.d/rc.firewall.new 
 
 # configure rules_single_interface script
-if [ -e etc/pyfirewall/$version/Iptables_Rules ]; then
-	cp -a etc/pyfirewall/$version/Iptables_Rules \
-	etc/pyfirewall/$version/Iptables_Rules.new.incoming
-	cat etc/pyfirewall/$version/Iptables_Rules.new > \
-	etc/pyfirewall/$version/Iptables_Rules.new.incoming
-	mv etc/pyfirewall/$version/Iptables_Rules.new.incoming \
-	etc/pyfirewall/$version/Iptables_Rules.new
-	mv etc/pyfirewall/$version/Iptables_Rules \
-	etc/pyfirewall/$version/Iptables_Rules.orig # if exist, make back-up and rename in .orig
-	chmod 0644 etc/pyfirewall/$version/Iptables_Rules.orig
+if [ -e etc/pyfirewall/start ]; then
+	cp -a etc/pyfirewall/start \
+	etc/pyfirewall/start.new.incoming
+	cat etc/pyfirewall/start.new > \
+	etc/pyfirewall/start.new.incoming
+	mv etc/pyfirewall/start.new.incoming \
+	etc/pyfirewall/start.new
+	mv etc/pyfirewall/start \
+	etc/pyfirewall/start.orig # if exist, make back-up and rename in .orig
+	chmod 0644 etc/pyfirewall/start.orig
 fi
 
-config etc/pyfirewall/$version/Iptables_Rules.new
-chmod 0700 etc/pyfirewall/$version/Iptables_Rules
+config etc/pyfirewall/start.new
+chmod 0700 etc/pyfirewall/start
 
 # configure rules_multi_interfaces script
-if [ -e etc/pyfirewall/$version/Iptables_Rules_MultiFaces ]; then
-	cp -a etc/pyfirewall/$version/Iptables_Rules_MultiFaces \
-	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new.incoming
-	cat etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new > \
-	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new.incoming
-	mv etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new.incoming \
-	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new
-	mv etc/pyfirewall/$version/Iptables_Rules_MultiFaces \
-	etc/pyfirewall/$version/Iptables_Rules_MultiFaces.orig # if exist, make back-up and rename in .orig
-	chmod 0644 etc/pyfirewall/$version/Iptables_Rules_MultiFaces.orig
+if [ -e etc/pyfirewall/start_types ]; then
+	cp -a etc/pyfirewall/start_types \
+	etc/pyfirewall/start_types.new.incoming
+	cat etc/pyfirewall/start_types.new > \
+	etc/pyfirewall/start_types.new.incoming
+	mv etc/pyfirewall/start_types.new.incoming \
+	etc/pyfirewall/start_types.new
+	mv etc/pyfirewall/start_types \
+	etc/pyfirewall/start_types.orig # if exist, make back-up and rename in .orig
+	chmod 0644 etc/pyfirewall/start_types.orig
 fi
-config etc/pyfirewall/$version/Iptables_Rules_MultiFaces.new
-chmod 0700 etc/pyfirewall/$version/Iptables_Rules_MultiFaces
+config etc/pyfirewall/start_types.new
+chmod 0700 etc/pyfirewall/start_types
 
 # configure iface.conf 
-if [ -e etc/pyfirewall/$version/iface.conf ]; then
-	mv etc/pyfirewall/$version/iface.conf \
-	etc/pyfirewall/$version/iface.conf.orig # if exist, make back-up and rename in .orig
+if [ -e etc/pyfirewall/iface.conf ]; then
+	mv etc/pyfirewall/iface.conf \
+	etc/pyfirewall/iface.conf.orig # if exist, make back-up and rename in .orig
 fi
-config etc/pyfirewall/$version/iface.conf.new
-chmod 0644 etc/pyfirewall/$version/iface.conf
+config etc/pyfirewall/iface.conf.new
+chmod 0644 etc/pyfirewall/iface.conf
 
 
 # if exist sysctl.conf, make back-up and rename in .orig

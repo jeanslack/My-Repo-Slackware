@@ -90,35 +90,32 @@ find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 # Do special operations
-mkdir -p $PKG/etc/$PKGNAME/$VERSION/private # add need directory for database and configurations
+mkdir -p $PKG/etc/$PKGNAME/private # add need directory for database and configurations
 #chmod 0700 $PKG/etc/$PKGNAME/$VERSION/private
 
-cat $TMP/$PKGNAME-$VERSION/config/rules/start_firewall > \
-$PKG/etc/$PKGNAME/$VERSION/start_firewall
-chmod 0700 $PKG/etc/pyfirewall/$VERSION/start_firewall
+cat $TMP/$PKGNAME-$VERSION/config/rules/start > \
+$PKG/etc/$PKGNAME/start.new
 
-cat $TMP/$PKGNAME-$VERSION/config/rules/stop_firewall > \
-$PKG/etc/$PKGNAME/$VERSION/stop_firewall
-chmod 0700 $PKG/etc/pyfirewall/$VERSION/stop_firewall
+cat $TMP/$PKGNAME-$VERSION/config/rules/start_types > \
+$PKG/etc/$PKGNAME/start_types.new
 
-cat $TMP/$PKGNAME-$VERSION/config/rules/block_network > \
-$PKG/etc/$PKGNAME/$VERSION/block_network
-chmod 0700 $PKG/etc/pyfirewall/$VERSION/block_network
+cat $TMP/$PKGNAME-$VERSION/config/rules/stop > \
+$PKG/etc/$PKGNAME/stop
+chmod 0700 $PKG/etc/pyfirewall/stop
 
-cat $TMP/$PKGNAME-$VERSION/config/rules/Iptables_Rules > \
-$PKG/etc/$PKGNAME/$VERSION/Iptables_Rules.new
-cat $TMP/$PKGNAME-$VERSION/config/rules/Iptables_Rules_MultiFaces > \
-$PKG/etc/$PKGNAME/$VERSION/Iptables_Rules_MultiFaces.new
+cat $TMP/$PKGNAME-$VERSION/config/rules/block > \
+$PKG/etc/$PKGNAME/block
+chmod 0700 $PKG/etc/pyfirewall/block
 
 cat $TMP/$PKGNAME-$VERSION/config/rules/iface.conf > \
-$PKG/etc/$PKGNAME/$VERSION/iface.conf.new
+$PKG/etc/$PKGNAME/iface.conf.new
 
 mkdir -p $PKG/etc/rc.d
 cat $TMP/$PKGNAME-$VERSION/config/demon/firewall > $PKG/etc/rc.d/rc.firewall.new
 cat $TMP/$PKGNAME-$VERSION/config/sysctl.conf > $PKG/etc/sysctl.conf.new
 
 # Add documentation files: readme, changelog and so on
-cat $TMP/$PKGNAME-$VERSION/config/rules/README > $PKG/etc/$PKGNAME/$VERSION/README
+cat $TMP/$PKGNAME-$VERSION/config/rules/README > $PKG/etc/$PKGNAME/README
 mkdir -p $PKG/usr/doc/$PKGNAME-$VERSION/SlackBuild
 cd $TMP/$PKGNAME-$VERSION
 cp -a AUTHORS BUGS COPYING README.md CHANGELOG TODO docs/* \
