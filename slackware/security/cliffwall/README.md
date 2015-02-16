@@ -16,9 +16,9 @@ have either tetex or texlive installed.
 
 To run cliffwall at boot you can add the following code to rc.local file:
 
-if [ -x /lib/cliffwall/cliffwall-init ]; then
-/lib/cliffwall/cliffwall-init start
-fi
+		if [ -x /lib/cliffwall/cliffwall-init ]; then
+			/lib/cliffwall/cliffwall-init start
+		fi
 
 
 Description:
