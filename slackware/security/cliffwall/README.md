@@ -20,6 +20,14 @@ To run cliffwall at boot you can add the following code to rc.local file:
 			/lib/cliffwall/cliffwall-init start
 		fi
 
+or (simpler and more effective) make a symlink to /lib/cliffwall/cliffwall-init 
+like this:
+
+		ln -s /lib/cliffwall/cliffwall-init /etc/rc.d/rc.firewall
+
+at last add need executable in both case, of course:
+
+		chmod +x /lib/cliffwall/cliffwall-init
 
 Description:
 ----
