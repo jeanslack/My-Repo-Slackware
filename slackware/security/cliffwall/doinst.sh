@@ -27,7 +27,7 @@ if [ -e etc/cliffwall/start ]; then
 fi
 
 config etc/cliffwall/start.new
-chmod 0700 etc/cliffwall/start
+chmod 0755 etc/cliffwall/start
 
 # configure rules_multi_interfaces script
 if [ -e etc/cliffwall/start_types ]; then
@@ -42,7 +42,7 @@ if [ -e etc/cliffwall/start_types ]; then
 	chmod 0644 etc/cliffwall/start_types.orig
 fi
 config etc/cliffwall/start_types.new
-chmod 0700 etc/cliffwall/start_types
+chmod 0755 etc/cliffwall/start_types
 
 # configure iface.conf 
 if [ -e etc/cliffwall/iface.conf ]; then
@@ -68,9 +68,8 @@ fi
 config etc/sysctl.conf.new
 
 chmod 0755 lib/cliffwall/cliffwall-init-functions
-chmod 0755 usr/sbin/cliffwall
 
-echo -e "\n\E[1m Now, you can execute '/sbin/sysctl -p' in the terminal \
+echo -e "\nNow, you can execute '/sbin/sysctl -p' in the terminal \
 window for\n enable network security kernel parameters, then run \
 cliffwall\n with 'cliffwall start' command.\n Read the every best man \
-page with 'man cliffwall' for more info.\E[0m\n"
+page with 'man cliffwall' for more info.\n"
