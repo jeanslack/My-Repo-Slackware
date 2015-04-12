@@ -29,9 +29,9 @@
 
 PKGNAME=Videomass
 PRGNAME=videomass
-VERSION=${VERSION:-0.12.2}
+VERSION=${VERSION:-0.13.0}
 PRERELEASE=${PRERELEASE:-beta}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-GiPe}
 SOURCE=https://github.com/jeanslack/$PKGNAME/archive/v$VERSION.tar.gz
 
@@ -49,8 +49,8 @@ PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-/tmp}
 
 # download the sourcess if not exist :
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ];then
- 	wget $SOURCE -O "$CWD/$PKGNAME-$VERSION.tar.gz"
+if [ ! -e $CWD/$PKGNAME-$VERSION-$PRERELEASE.tar.gz ];then
+ 	wget $SOURCE -O "$CWD/$PKGNAME-$VERSION-$PRERELEASE.tar.gz"
 fi
 
 if [ "$ARCH" = "i486" ]; then
