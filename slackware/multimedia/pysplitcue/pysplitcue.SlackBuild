@@ -31,7 +31,8 @@ PKGNAME=pysplitcue
 PRGNAME=pysplitcue
 VERSION=${VERSION:-0.6.1}
 BUILD=${BUILD:-1}
-SOURCE=https://github.com/jeanslack/$PKGNAME/archive/v$VERSION.tar.gz
+SOURCE="https://github.com/jeanslack/$PKGNAME/archive/v$VERSION.tar.gz"
+
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -47,8 +48,8 @@ PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-/tmp}
 
 # download the sourcess if not exist :
-if [ ! -e $CWD/$PKGNAME-$VERSION.tar.gz ];then
- 	wget $SOURCE -O "$CWD/$PKGNAME-$VERSION.tar.gz"
+if [ ! -e "$CWD/$PKGNAME-$VERSION.tar.gz" ];then
+ 	wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION.tar.gz"
 fi
 
 if [ "$ARCH" = "i486" ]; then
