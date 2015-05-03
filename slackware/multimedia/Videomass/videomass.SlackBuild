@@ -29,11 +29,12 @@
 
 PKGNAME=Videomass
 PRGNAME=videomass
-VERSION=${VERSION:-0.13.0}
-PRERELEASE=${PRERELEASE:-beta}
+VERSION=${VERSION:-0.16.0}
+#PRERELEASE=${PRERELEASE:-beta}
 BUILD=${BUILD:-3}
 TAG=${TAG:-GiPe}
-SOURCE="https://github.com/jeanslack/$PKGNAME/archive/v$VERSION-$PRERELEASE.tar.gz"
+
+SOURCE="https://github.com/jeanslack/$PKGNAME/archive/v$VERSION.tar.gz"
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
@@ -49,8 +50,8 @@ PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-/tmp}
 
 # download the sourcess if not exist :
-if [ ! -e "$CWD/$PKGNAME-$VERSION-$PRERELEASE.tar.gz" ];then
- 	wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION-$PRERELEASE.tar.gz"
+if [ ! -e "$CWD/$PKGNAME-$VERSION.tar.gz" ];then
+ 	wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION.tar.gz"
 fi
 
 if [ "$ARCH" = "i486" ]; then
@@ -72,9 +73,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PKGNAME-$VERSION-$PRERELEASE
-tar xvf $CWD/$PKGNAME-$VERSION-$PRERELEASE.tar.gz
-cd $PKGNAME-$VERSION-$PRERELEASE
+rm -rf $PKGNAME-$VERSION
+tar xvf $CWD/$PKGNAME-$VERSION.tar.gz
+cd $PKGNAME-$VERSION
 
 chown -R root:root . 
 find -L . \
@@ -94,12 +95,12 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
 
 # make dir for copy config file and copy file xml presets
 mkdir -p $PKG/usr/share/$PRGNAME/config
-cp -a  $TMP/$PKGNAME-$VERSION-$PRERELEASE/share/videomass.conf $PKG/usr/share/$PRGNAME/config
-cp -a  $TMP/$PKGNAME-$VERSION-$PRERELEASE/share/*.vdms $PKG/usr/share/$PRGNAME/config
+cp -a  $TMP/$PKGNAME-$VERSION/share/videomass.conf $PKG/usr/share/$PRGNAME/config
+cp -a  $TMP/$PKGNAME-$VERSION/share/*.vdms $PKG/usr/share/$PRGNAME/config
 
 # make dir for copy icons
 mkdir -p $PKG/usr/share/$PRGNAME/icons
-cp -a  $TMP/$PKGNAME-$VERSION-$PRERELEASE/art/*.png $PKG/usr/share/$PRGNAME/icons
+cp -a  $TMP/$PKGNAME-$VERSION/art/*.png $PKG/usr/share/$PRGNAME/icons
 
 chmod 644 $PKG/usr/share/$PRGNAME/config/*
 
@@ -115,7 +116,7 @@ cp -a AUTHORS BUGS CHANGELOG INSTALL LICENSE README.md TODO docs/* \
     $PKG/usr/doc/$PRGNAME
 
 mkdir -p $PKG/usr/doc/$PRGNAME/HTML
-cp -a $TMP/$PKGNAME-$VERSION-$PRERELEASE/docs/HTML/*.html $PKG/usr/doc/$PRGNAME/HTML
+cp -a $TMP/$PKGNAME-$VERSION/docs/HTML/*.html $PKG/usr/doc/$PRGNAME/HTML
 
 rm -f $PKG/usr/share/$PRGNAME/{COPYING,README}
 cat $CWD/$PRGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
