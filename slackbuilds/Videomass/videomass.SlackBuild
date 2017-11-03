@@ -2,7 +2,7 @@
 
 # Slackware build script for videomass
 
-# Copyright 2014 Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# Copyright 2014-2017 Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
 # All rights reserved.
 
 # Written by Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
@@ -29,7 +29,7 @@
 
 PKGNAME=Videomass
 PRGNAME=videomass
-VERSION=${VERSION:-0.16.1}
+VERSION=${VERSION:-0.16.2}
 #PRERELEASE=${PRERELEASE:-beta}
 BUILD=${BUILD:-3}
 TAG=${TAG:-GiPe}
