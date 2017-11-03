@@ -1,9 +1,9 @@
-my_slackbuilds
+The My Slackbuilds
 =================
 
 I'm a Slackware lover!
 
-This repository only contains my personal slackbuilds.
+This folder contains my personal slackbuilds.
 
 For more information on how to use slackbuilds see:
 
