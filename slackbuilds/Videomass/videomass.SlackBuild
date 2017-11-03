@@ -31,14 +31,14 @@ PKGNAME=Videomass
 PRGNAME=videomass
 VERSION=${VERSION:-0.16.2}
 #PRERELEASE=${PRERELEASE:-beta}
-BUILD=${BUILD:-3}
+BUILD=${BUILD:-1}
 TAG=${TAG:-GiPe}
 
 SOURCE="https://github.com/jeanslack/$PKGNAME/archive/v$VERSION.tar.gz"
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
-    i?86) ARCH=i486 ;;
+    i?86) ARCH=i586 ;;
     arm*) ARCH=arm ;;
        *) ARCH=$( uname -m ) ;;
   esac
@@ -49,13 +49,9 @@ TMP=${TMP:-/tmp/GiPe}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-/tmp}
 
-# download the sourcess if not exist :
-if [ ! -e "$CWD/$PKGNAME-$VERSION.tar.gz" ];then
- 	wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION.tar.gz"
-fi
-
-if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+# Arch type
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-O2 -march=i686 -mtune=i686"
@@ -66,6 +62,11 @@ elif [ "$ARCH" = "x86_64" ]; then
 else
   SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
+fi
+
+# download the sourcess if not exist :
+if [ ! -e "$CWD/$PKGNAME-$VERSION.tar.gz" ];then
+ 	wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION.tar.gz"
 fi
 
 set -e
@@ -87,7 +88,8 @@ find -L . \
 # Cleanup the desktop menu item.
 sed -i -e "/^Icon/s|=.*|=$PRGNAME|" videomass.desktop
 
-python setup.py install --root=$PKG
+python setup.py build || exit 1
+python setup.py install --root=$PKG || exit 1
 
 # Strip binaries and libraries.
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
