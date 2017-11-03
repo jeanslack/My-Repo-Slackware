@@ -5,37 +5,29 @@ This is SlackBuild script for build audiomass-cli packages.
 Description:
 ----
 
-This automates the package building for Slackware distibutions.
-
+Audiomass-cli is a command-line program similar ncurses interface to 
+convert audio-file.
 
 Instructions
 ---- 
+If you want create only a audiomass package for Slackware, you should 
+downloading this slackbuild and his content directory. An easy way to download 
+this slackbuild directory to your local computer is the following command 
+(provided you installed the svn package):
 
-- Open a terminal window and download this SlackBuilds content directory :
+    svn checkout https://github.com/jeanslack/slackbuilds/trunk/audiomass
 
-		svn checkout https://github.com/jeanslack/My-Repo-Slackware/trunk/slackware/multimedia/audiomass-cli
+Dependencies:
+----
+This package requires:
+ 
+    python >=2.6 (no python >= 3)
+    shntools 
+    ffmpeg 
+    mac
 
-
-- Login with root:
-
-		su -
-		
-- Enter in the path-name of a slackbuild folder:
-
-		cd /path/of_the slackbuild/
-
-- Then run the script:
-
-		./audiomass-cli.SlackBuild
-
-Make sure to run this script in a real root shell ("su -") and that you
-have either tetex or texlive installed.
-
-
-For instructions on how to use the SlackBuilds, see:
-
-[http://slackbuilds.org/howto/](http://slackbuilds.org/howto/)
-
-[http://www.slackwiki.com/SlackBuild_Scripts](http://www.slackwiki.com/SlackBuild_Scripts)
-
-[http://www.slacky.eu/slacky/Slackware_%26_SlackBuild](http://www.slacky.eu/slacky/Slackware_%26_SlackBuild)
+Make a package with the slackbuild:
+----
+This slackbuild has been setup to automatically download the latest source 
+release of the audiomass on my github repo in archive .tar.gz.
+Run the slackbuild in the usual way.

@@ -2,7 +2,7 @@
 
 # Slackware build script for audiomass-cli
 
-# Copyright 2015 Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
+# Copyright 2015-2017 Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
 # All rights reserved.
 
 # Written by Gianluca Pernigotto (jeanlucperni[at]gmail[dot]com)
@@ -47,13 +47,9 @@ TMP=${TMP:-/tmp/GiPe}
 PKG=$TMP/package-$PKGNAME
 OUTPUT=${OUTPUT:-/tmp}
 
-# download the sourcess if not exist :
-if [ ! -e "$CWD/$PKGNAME-$VERSION.tar.gz" ];then
- 	wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION.tar.gz"
-fi
-
-if [ "$ARCH" = "i486" ]; then
-  SLKCFLAGS="-O2 -march=i486 -mtune=i686"
+# Arch type
+if [ "$ARCH" = "i586" ]; then
+  SLKCFLAGS="-O2 -march=i586 -mtune=i686"
   LIBDIRSUFFIX=""
 elif [ "$ARCH" = "i686" ]; then
   SLKCFLAGS="-O2 -march=i686 -mtune=i686"
@@ -64,6 +60,13 @@ elif [ "$ARCH" = "x86_64" ]; then
 else
   SLKCFLAGS="-O2"
   LIBDIRSUFFIX=""
+fi
+
+# this slackbuild has been set up to automatically download the latest 
+# source release so do not worry about anything else.
+# download the sourcess if not exist :
+if [ ! -e "$CWD/$PKGNAME-$VERSION.tar.gz" ];then
+ 	wget "$SOURCE" -O "$CWD/$PKGNAME-$VERSION.tar.gz"
 fi
 
 set -e

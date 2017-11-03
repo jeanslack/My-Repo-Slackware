@@ -14,7 +14,14 @@ downloading this slackbuild and his content directory. An easy way to download
 this slackbuild directory of cliffwall program to your local computer is the 
 following command (provided you installed the svn package)
 
-    svn checkout https://github.com/jeanslack/my_repository/trunk/slackbuilds/cliffwall
+    svn checkout https://github.com/jeanslack/slackbuilds/trunk/cliffwall
+
+requires dependencies:
+----
+			Python >= 2.6 (no python >= 3)
+			iptables
+
+
 
 Make a package with the slackbuild:
 ----
@@ -32,21 +39,11 @@ to rc.local file:
 		fi
 
 or (simpler and more effective) make a symlink to /lib/cliffwall/cliffwall-init 
-like this:
+In this case should be running before the internet connection, like this:
 
 		ln -s /lib/cliffwall/cliffwall-init /etc/rc.d/rc.firewall
 
 at last add need executable in both case, of course:
 
 		chmod +x /lib/cliffwall/cliffwall-init
-
-
-For instructions on how to use the SlackBuilds, see:
-----
-
-[http://slackbuilds.org/howto/](http://slackbuilds.org/howto/)
-
-[http://www.slackwiki.com/SlackBuild_Scripts](http://www.slackwiki.com/SlackBuild_Scripts)
-
-[http://www.slacky.eu/slacky/Slackware_%26_SlackBuild](http://www.slacky.eu/slacky/Slackware_%26_SlackBuild)
 
