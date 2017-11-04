@@ -50,6 +50,7 @@ models name list
     ip1900
 
 just you insert the exact model name in the list above, example:
+
     MODEL=ip3600 ./cnijfilter-common.SlackBuild
 
 Make a package with the slackbuild:
