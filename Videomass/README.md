@@ -27,17 +27,19 @@ require:
     
 extra require:
   
-    ffmpeg >= 2.1  (
-                   Compiled or configured with --eneble-nonfree 
-		   and with the following libraries:
-		   x264
-		   lame
-		   faac
-		   vp8(libvpx)
-		   xvid
-		   )
+    ffmpeg >= 2.1
 
-     
+Compiled or configured with 
+
+    --eneble-nonfree 
+
+..and with the following libraries (static or shared):
+
+    x264
+    lame
+    faac
+    vp8(libvpx)
+    xvid
     
 Make a package with the slackbuild:
 ----
