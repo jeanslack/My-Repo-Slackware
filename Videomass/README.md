@@ -28,12 +28,14 @@ require:
 extra require:
   
     ffmpeg >= 2.1
+    ffprobe (for multimedia streams analysis)
+    ffplay (media player for preview)
 
-Compiled or configured with 
+ffmpeg must be compiled or configured with 
 
     --eneble-nonfree 
 
-..and with the following libraries (statics or shareds):
+..and at least with the following libraries (statics or shareds):
 
     x264
     lame
