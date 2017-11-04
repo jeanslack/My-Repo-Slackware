@@ -64,7 +64,7 @@ Others Resources:
 ----
 1) My blogspot:   
 [http://itamburiditux.blogspot.it/2012/06/canon-driver-per-slackware-1337-i486.html](http://itamburiditux.blogspot.it/2012/06/canon-driver-per-slackware-1337-i486.html)   
-2) My blogspot:
+2) My blogspot:   
 [http://itamburiditux.blogspot.it/2012/06/driver-stampante-canon-mp630-ed-ip1900.html](http://itamburiditux.blogspot.it/2012/06/driver-stampante-canon-mp630-ed-ip1900.html)   
 3) SlackBlogs by Willy Sudiarto Raharjo:   
 [https://slackblogs.blogspot.it/2012/05/new-linux-printer-driver-on-slackhacks.html](https://slackblogs.blogspot.it/2012/05/new-linux-printer-driver-on-slackhacks.html)
