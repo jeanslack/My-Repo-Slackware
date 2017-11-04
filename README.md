@@ -15,7 +15,7 @@ For more information on how to use the slackbuilds to make packages see:
 
 [http://slackbuilds.org/howto/](http://slackbuilds.org/howto/)
 
-[http://www.slackwiki.com/SlackBuild_Scripts](http://www.slackwiki.com/SlackBuild_Scripts)
+[http://www.slackwiki.com/SlackBuild_Scripts](http://www.slackwiki.com/SlackBuild_Scripts)   
 
-or (for Italian community):
+or (for Italian community):   
 [http://www.slacky.eu/slacky/Slackware_%26_SlackBuild](http://www.slacky.eu/slacky/Slackware_%26_SlackBuild)
