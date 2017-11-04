@@ -33,7 +33,7 @@ Compiled or configured with
 
     --eneble-nonfree 
 
-..and with the following libraries (static or shared):
+..and with the following libraries (statics or shareds):
 
     x264
     lame
