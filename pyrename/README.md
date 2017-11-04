@@ -1,42 +1,33 @@
 ---------------------------------------------------------
-This is SlackBuild script for build pyrename package.
+SlackBuild script for build pyrename package.
 ---------------------------------------------------------
 
 Description:
 ----
-
-This automates the package building for Slackware distibutions.
-
+pyrename Pyrename is a renamer python script for unix based systems
 
 Instructions
 ---- 
+If you want create only a pyrename package for Slackware, you should 
+downloading this slackbuild and his content directory. An easy way to download 
+this slackbuild directory to your local computer is the following command 
+(provided you installed the svn package):
 
-- Open a terminal window and download this SlackBuilds content directory :
+    svn checkout https://github.com/jeanslack/slackbuilds/trunk/pyrename
 
-		svn checkout https://github.com/jeanslack/My-Repo-Slackware/trunk/slackware/utilities/pyrename
+Dependencies:
+----
+This package requires:
+ 
+    python >=2.6 (no python >= 3)
 
+Make a package with the slackbuild:
+----
+This slackbuild has been setup to automatically download the latest source 
+release of the pyrename on my github repo in archive .tar.gz.
+Run the slackbuild in the usual way.
 
-- Login with root:
-
-		su -
-		
-- Enter in the path-name of a slackbuild folder:
-
-		cd /path/of_the slackbuild/
-
-- Then run the script:
-
-		./pyrename.SlackBuild
-
-Make sure to run this script in a real root shell ("su -") and that you
-have either tetex or texlive installed.
-
-
-For instructions on how to use the SlackBuilds, see:
-
-[http://slackbuilds.org/howto/](http://slackbuilds.org/howto/)
-
-[http://www.slackwiki.com/SlackBuild_Scripts](http://www.slackwiki.com/SlackBuild_Scripts)
-
-[http://www.slacky.eu/slacky/Slackware_%26_SlackBuild](http://www.slacky.eu/slacky/Slackware_%26_SlackBuild)
+Italian Resources:
+----
+[http://itamburiditux.blogspot.it/2010/11/rinominare-piu-file-o-cartelle.html](http://itamburiditux.blogspot.it/2010/11/rinominare-piu-file-o-cartelle.html)
 

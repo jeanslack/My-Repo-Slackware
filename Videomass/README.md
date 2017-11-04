@@ -40,3 +40,6 @@ This slackbuild has been setup to automatically download the latest source
 release of the videomass on my github repo in archive .tar.gz.
 Run the slackbuild in the usual way.
 
+Italian Resources:
+----
+[http://itamburiditux.blogspot.it/search?q=videomass](http://itamburiditux.blogspot.it/search?q=videomass)

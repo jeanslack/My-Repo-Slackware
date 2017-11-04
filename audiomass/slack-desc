@@ -8,9 +8,10 @@
              |-----handy-ruler------------------------------------------------|
 audiomass-cli: Audiomass-cli (Audio-converter and batch-mode)
 audiomass-cli:
-audiomass-cli: Audiomass-cli is a command-line program similar ncurses
-audiomass-cli: interface to convert audio-file.
-audiomass-cli: 
+audiomass-cli: Audiomass is a simple audio converter interface   
+audiomass-cli: to command line for multiple audio formats.   
+audiomass-cli: Support Flac, Lame, Ogg, Mac, Shntool and FFmpeg   
+audiomass-cli: audio libraries.
 audiomass-cli: 
 audiomass-cli: 
 audiomass-cli: 

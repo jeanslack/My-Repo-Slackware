@@ -8,10 +8,10 @@
              |-----handy-ruler------------------------------------------------|
 cliconversion: Cliconversion (Audio-converter and batch-mode)
 cliconversion:
-cliconversion: Cliconversion is a command-line program similar ncurses   
-cliconversion: interface to convert audio-file in batch-mode.  
-cliconversion: 
-cliconversion: 
+cliconversion: Cliconversion is a simple audio converter interface   
+cliconversion: to command line for multiple audio formats.   
+cliconversion: Support Flac, Lame, Ogg, Mac, Shntool and FFmpeg   
+cliconversion: audio libraries.
 cliconversion: 
 cliconversion: 
 cliconversion:

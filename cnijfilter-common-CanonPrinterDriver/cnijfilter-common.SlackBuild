@@ -1,6 +1,6 @@
 #!/bin/sh
  
-# Heavily based on the Slackware 14.0 SlackBuild
+# Heavily based on the Slackware 14.0/14.1 SlackBuild
 
 # Written by Matteo Rossini ( zerouno at slacky it )
 # Last build from Matteo Rossini ( zerouno at slacky it )
@@ -100,7 +100,9 @@ if [ -e EULA.TXT ];then
   fi
 fi
 
-JOBS=${JOBS:--j4}
+# set youre jobs here
+JOBS=${JOBS:--j2}
+
 CWD=$(pwd)
 TMP=${TMP:-/tmp/buildpkgs/$PKGNAME}
 PKG=$TMP/package-$PKGNAME

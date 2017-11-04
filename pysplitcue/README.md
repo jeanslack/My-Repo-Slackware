@@ -4,38 +4,38 @@ SlackBuild script for build pysplitcue packages.
 
 Description:
 ----
-
-This automates the package building for Slackware distibutions.
-
+Pysplitcue is a command-line program to split track audio from a cue-file 
+and convert to a different audio formats
 
 Instructions
 ---- 
+If you want create only a pysplitcue package for Slackware, you should 
+downloading this slackbuild and his content directory. An easy way to download 
+this slackbuild directory to your local computer is the following command 
+(provided you installed the svn package):
 
-- Open a terminal window and download this SlackBuilds content directory :
+    svn checkout https://github.com/jeanslack/slackbuilds/trunk/pysplitcue
 
-		svn checkout https://github.com/jeanslack/My-Repo-Slackware/trunk/slackware/multimedia/pysplitcue
+Dependencies:
+----
+This package requires:
+ 
+    python >=2.6 (no python >= 3)
 
+extra requires:
+ 
+    flac
+    cuetools
+    shntool
+    mac or monkeys-audio
+    wavpack
 
-- Login with root:
+Make a package with the slackbuild:
+----
+This slackbuild has been setup to automatically download the latest source 
+release of the pysplitcue on my github repo in archive .tar.gz.
+Run the slackbuild in the usual way.
 
-		su -
-		
-- Enter in the path-name of a slackbuild folder:
-
-		cd /path/of_the slackbuild/
-
-- Then run the script:
-
-		./pysplitcue.SlackBuild
-
-Make sure to run this script in a real root shell ("su -") and that you
-have either tetex or texlive installed.
-
-
-For instructions on how to use the SlackBuilds, see:
-
-[http://slackbuilds.org/howto/](http://slackbuilds.org/howto/)
-
-[http://www.slackwiki.com/SlackBuild_Scripts](http://www.slackwiki.com/SlackBuild_Scripts)
-
-[http://www.slacky.eu/slacky/Slackware_%26_SlackBuild](http://www.slacky.eu/slacky/Slackware_%26_SlackBuild)
+Italian Resources:
+----
+[http://itamburiditux.blogspot.it/2010/07/splitting-wav-ape-flac-and-add-tag-from.html](http://itamburiditux.blogspot.it/2010/07/splitting-wav-ape-flac-and-add-tag-from.html)

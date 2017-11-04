@@ -4,9 +4,9 @@ This is SlackBuild script for build audiomass-cli packages.
 
 Description:
 ----
-
-Audiomass-cli is a command-line program similar ncurses interface to 
-convert audio-file.
+Audiomass-cli is a simple audio converter interface to command line for 
+multiple audio formats. Support Flac, Lame, Ogg, Mac, Shntool and FFmpeg 
+audio libraries 
 
 Instructions
 ---- 

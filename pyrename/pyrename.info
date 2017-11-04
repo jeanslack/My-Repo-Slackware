@@ -1,7 +1,7 @@
 PRGNAM="pyrename"
 VERSION="0.9"
 HOMEPAGE="https://github.com/jeanslack/pyrename"
-DOWNLOAD=""
+DOWNLOAD="https://github.com/jeanslack/pyrename/releases"
 MD5SUM=""
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
