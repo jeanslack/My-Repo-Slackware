@@ -20,19 +20,24 @@ Dependencies:
 ----
 videomass requires these dependencies:
 
-	require:
+require:
 	
-			Python >= 2.6 (no python 3)
-			wxPython >= 2.8
+    Python >= 2.6 (no python 3)
+    wxPython >= 2.8
     
-    extra require:
-    
-			ffmpeg >= 2.1 (Maybe not work correctly with previous versions)
-			x264
-			lame
-			faac
-			vp8(libvpx)
-			xvid 
+extra require:
+  
+    ffmpeg >= 2.1  (
+                   Compiled or configured with --eneble-nonfree 
+		   and with the following libraries:
+		   x264
+		   lame
+		   faac
+		   vp8(libvpx)
+		   xvid
+		   )
+
+     
     
 Make a package with the slackbuild:
 ----
