@@ -1,6 +1,6 @@
 ---------------------------------------------------------
 SlackBuild script for build cnijfilter-common driver 
-packages for Canon Pixma Printers
+package for Canon Pixma Printers
 ---------------------------------------------------------
 
 Description:
