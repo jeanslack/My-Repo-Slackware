@@ -6,7 +6,7 @@ Disclaimer
 This folder contains my personal slackbuilds for my applications and others
 third parts applications that I usually install on my local computers.
 For now there is no digital signature control and you can not run md5sum yet
-for data integrity :-(   
+for data integrity :-(    
 Use at your own risk and danger.
 
 How to use?
