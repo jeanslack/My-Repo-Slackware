@@ -31,19 +31,26 @@ Run the slackbuild in the usual way.
 
 Do after installation:
 ----
-After installation, to run cliffwall at boot you can add the following code 
-to rc.local file:
+As always, there are two ways to create a boot service on Slackware:
+
+1)  After installation, to run cliffwall at boot add the following code 
+    to /etc/rc.d/rc.local file:
 
 		if [ -x /lib/cliffwall/cliffwall-init ]; then
 			/lib/cliffwall/cliffwall-init start
 		fi
 
-or (simpler and more effective) make a symlink to /lib/cliffwall/cliffwall-init 
-In this case should be running before the internet connection, like this:
+2)  This second way is simpler and more effective because the firewall should   
+    be running before the internet connection (network).   
+    Make a symlink into /etc/rc.d, like this:
 
 		ln -s /lib/cliffwall/cliffwall-init /etc/rc.d/rc.firewall
 
-at last add need executable in both case, of course:
+At last check the executable permission in both case:
 
-		chmod +x /lib/cliffwall/cliffwall-init
+                ls -l /lib/cliffwall/cliffwall-init   
+
+If necessary, add the execution permissions with chmod:   
+
+                chmod +x /lib/cliffwall/cliffwall-init
 
