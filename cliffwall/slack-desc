@@ -9,7 +9,7 @@
 cliffwall: cliffwall (based iptables firewalling)
 cliffwall:
 cliffwall: cliffwall is a front-end of iptables and consist in a Stateful   
-cliffwall: by python script for single hosts.
+cliffwall: firewall by python script for single hosts.
 cliffwall: 
 cliffwall: 
 cliffwall: 
