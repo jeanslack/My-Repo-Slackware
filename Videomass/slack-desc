@@ -10,8 +10,8 @@ videomass: videomass (front-end ffmpeg gui)
 videomass:
 videomass: Videomass is a cross-platform graphic user interface for ffmpeg 
 videomass: developed in wxPython.
-videomass: It born to need for give a some graphic feature at the too many
-videomass: ffmpeg potentialities.
+videomass: The Videomass goal is to provide a functional interface for
+videomass: organizing your own ffmpeg pofiles through presets management.
 videomass:
 videomass: Homepage: http://jeanslack.github.io/Videomass/
 videomass:
