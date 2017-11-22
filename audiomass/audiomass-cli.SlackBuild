@@ -29,7 +29,7 @@
 
 PKGNAME=audiomass
 PRGNAME=audiomass-cli
-VERSION=${VERSION:-0.6.0}
+VERSION=${VERSION:-0.6.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-GiPe}
 SOURCE="https://github.com/jeanslack/$PKGNAME/archive/v$VERSION.tar.gz"
@@ -85,7 +85,8 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-python setup.py install --root=$PKG
+python setup.py build || exit 1
+python setup.py install --root=$PKG || exit 1
 
 # Strip binaries and libraries.
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \

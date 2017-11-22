@@ -6,13 +6,13 @@
 # leave one space after the ':'.
 
              |-----handy-ruler------------------------------------------------|
-audiomass-cli: Audiomass-cli (Audio-converter and batch-mode)
+audiomass-cli: Audiomass-cli (Audio-converter front-end)
 audiomass-cli:
-audiomass-cli: Audiomass is a simple audio converter interface   
-audiomass-cli: to command line for multiple audio formats.   
-audiomass-cli: Support Flac, Lame, Ogg, Mac, Shntool and FFmpeg   
-audiomass-cli: audio libraries.
-audiomass-cli: 
+audiomass-cli: **Audiomass-cli** is a simple audio converter interface to
+audiomass-cli: command line for Flac, Lame, Ogg, Mac, Shntool and FFmpeg
+audiomass-cli: audio libraries. it brings together the tools to encode and
+audiomass-cli: decode the most popular audio files, such as: MP3, FLAC, OGG,
+audiomass-cli: APE, WAV and AIFF.
 audiomass-cli: 
 audiomass-cli: 
 audiomass-cli:
