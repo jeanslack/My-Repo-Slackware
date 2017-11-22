@@ -2,17 +2,18 @@
 SlackBuild script for build pysplitcue packages.
 ---------------------------------------------------------
 
-Description:
+Description
 ----
-Pysplitcue is a command-line program to split track audio from a cue-file 
-and convert to a different audio formats
+This Slackbuild is a script for automatizing the **pysplitcue** compilation for 
+packaging precompiled binaries of the Slackware distribuition and based Slackware 
+distro.
 
-Instructions
----- 
-If you want create only a pysplitcue package for Slackware, you should 
-downloading this slackbuild and his content directory. An easy way to download 
-this slackbuild directory to your local computer is the following command 
-(provided you installed the svn package):
+How to handle this part of repository
+----
+You probably do not care downloading my slackbuilds repository entirely, but you want 
+make a videomass package for Slackware, and then downloading this slackbuild and 
+his content directory. An easy way to download this slackbuild directory to your local 
+computer is the following command (provided you installed the svn package):
 
     svn checkout https://github.com/jeanslack/slackbuilds/trunk/pysplitcue
 
@@ -35,7 +36,3 @@ Make a package with the slackbuild:
 This slackbuild has been setup to automatically download the latest source 
 release of the pysplitcue on my github repo in archive .tar.gz.
 Run the slackbuild in the usual way.
-
-Italian Resources:
-----
-[http://itamburiditux.blogspot.it/2010/07/splitting-wav-ape-flac-and-add-tag-from.html](http://itamburiditux.blogspot.it/2010/07/splitting-wav-ape-flac-and-add-tag-from.html)

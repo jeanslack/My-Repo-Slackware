@@ -8,12 +8,12 @@
           |-----handy-ruler---------------------------------------------------|
 pysplitcue: Pysplitcue (Audio-splitter-cue-file)
 pysplitcue:
-pysplitcue: Pysplitcue is a command-line program to split track audio from a  
-pysplitcue: cue-file and convert to a different audio formats 
-pysplitcue: 
-pysplitcue: 
-pysplitcue: 
-pysplitcue: 
+pysplitcue: A easy front-end command line interface for Shntool and Cuetools.
+pysplitcue: A small program for audio files cue splitting, created for
+pysplitcue: amnesic and daytime people. Work with Wav, Flac and Ape audio
+pysplitcue: formats, requires the presence of the '* .cue' file in the same
+pysplitcue: musics tracks directory.
+pysplitcue:
 pysplitcue:
 pysplitcue:
 pysplitcue:
