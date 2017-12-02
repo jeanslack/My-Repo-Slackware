@@ -8,11 +8,11 @@
              |-----handy-ruler------------------------------------------------|
 audiomass-cli: Audiomass-cli (Audio-converter front-end)
 audiomass-cli:
-audiomass-cli: **Audiomass-cli** is a simple audio converter interface to
-audiomass-cli: command line for Flac, Lame, Ogg, Mac, Shntool and FFmpeg
-audiomass-cli: audio libraries. it brings together the tools to encode and
-audiomass-cli: decode the most popular audio files, such as: MP3, FLAC, OGG,
-audiomass-cli: APE, WAV and AIFF.
+audiomass-cli: **Audiomass-cli** is a command line wrapper that interfaces on
+audiomass-cli: differents audio codecs for multiple input data streams
+audiomass-cli: conversions. It can be easily implemented with other audio
+audiomass-cli: library codecs and currently supports: Flac, Lame, Vorbis-tools,
+audiomass-cli: Monkey's Audio, Shntool FFmpeg, etc.
 audiomass-cli: 
 audiomass-cli: 
 audiomass-cli:
