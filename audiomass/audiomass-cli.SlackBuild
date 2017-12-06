@@ -29,7 +29,7 @@
 
 PKGNAME=audiomass
 PRGNAME=audiomass-cli
-VERSION=${VERSION:-0.7.1}
+VERSION=${VERSION:-0.7.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-GiPe}
 SOURCE="https://github.com/jeanslack/$PKGNAME/archive/v$VERSION.tar.gz"

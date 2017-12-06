@@ -12,7 +12,7 @@ audiomass-cli: **Audiomass-cli** is a command line wrapper that interfaces on
 audiomass-cli: differents audio codecs for multiple input data streams
 audiomass-cli: conversions. It can be easily implemented with other audio
 audiomass-cli: library codecs and currently supports: Flac, Lame, Vorbis-tools,
-audiomass-cli: Monkey's Audio, Shntool FFmpeg, etc.
+audiomass-cli: Monkey's Audio, Shntool and FFmpeg.
 audiomass-cli: 
 audiomass-cli: 
 audiomass-cli:
