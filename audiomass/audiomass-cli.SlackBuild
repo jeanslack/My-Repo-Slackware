@@ -96,7 +96,7 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
 install -m 0644 -p -D $TMP/$PKGNAME-$VERSION/man/audiomass-cli.1.gz $PKG/usr/man/man1/audiomass-cli.1.gz
 
 mkdir -p $PKG/usr/doc/$PRGNAME
-cp -a AUTHORS BUGS CHANGELOG COPYING LICENSE TODO README.md $PKG/usr/doc/$PRGNAME
+cp -a AUTHORS BUGS CHANGELOG COPYING TODO README.md $PKG/usr/doc/$PRGNAME
 
 cat $CWD/$PRGNAME.SlackBuild > $PKG/usr/doc/$PRGNAME/$PRGNAME.SlackBuild
 
