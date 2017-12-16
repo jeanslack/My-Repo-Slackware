@@ -1,5 +1,5 @@
 PRGNAM="audiomass-cli"
-VERSION="0.7.2"
+VERSION="0.7.4"
 HOMEPAGE="https://github.com/jeanslack/audiomass-cli"
 DOWNLOAD="https://github.com/jeanslack/audiomass/archive/v0.6.0.tar.gz"
 MD5SUM=""

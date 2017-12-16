@@ -28,7 +28,6 @@ Dependencies:
 
 - flac
 - lame
-- sox
 - vorbis-tools [oggenc, oggdec]
 - shntool
 - ffmpeg
